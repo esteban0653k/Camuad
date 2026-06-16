@@ -1,0 +1,7 @@
+# Ignorar archivos de configuración local
+.env
+
+# Ignorar respaldos pesados o archivos del sistema
+*.bak
+Thumbs.db
+.DS_Store
