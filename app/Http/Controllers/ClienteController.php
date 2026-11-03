@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Services\ClienteService;
@@ -86,6 +86,16 @@ class ClienteController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Cliente eliminado correctamente'
+        ], 200);
+    }
+    public function getNombre(Request $request)
+    {
+        $nombre = $request->query('nombre', '');
+        $clientes = $this->clienteService->buscarClientesPorNombre($nombre);
+
+        return response()->json([
+            'success' => true,
+            'data' => $clientes
         ], 200);
     }
 }
