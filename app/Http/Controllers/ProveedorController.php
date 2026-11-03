@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\ProveedorService;
-use App\Http\Requests\RequestProveedor;
+use App\Http\Requests\ProveedorRequest;
 
 class ProveedorController extends Controller
 {
@@ -32,7 +32,6 @@ class ProveedorController extends Controller
         ], 201);
     }
 
-    // Traer un registro por id (nit)
     public function show(string $id)
     {
         $registro = $this->proveedorService->getById($id);
@@ -49,7 +48,6 @@ class ProveedorController extends Controller
         ], 200);
     }
 
-    // Actualizar un registro
     public function update(RequestProveedor $request, string $id)
     {
         $registroActualizado = $this->proveedorService->update($id, $request->validated());
@@ -66,7 +64,6 @@ class ProveedorController extends Controller
         ], 200);
     }
 
-    // Eliminar un registro
     public function destroy(string $id)
     {
         $validar = $this->proveedorService->delete($id);
