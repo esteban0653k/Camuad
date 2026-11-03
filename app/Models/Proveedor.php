@@ -10,7 +10,7 @@ class Proveedor extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = "proveedor";
+    protected $table = "proveedores";
     protected $primaryKey = 'nit_proveedor'; 
     public $incrementing = false;
     protected $keyType = 'string';

@@ -20,11 +20,11 @@ class RequestProveedor extends FormRequest
         $proveedorNit = $this->route('proveedor') ?? $this->route('nit'); 
 
         return [
-            'nit_provvedor' => [
+            'nit_proveedor' => [
                 $isUpdate ? 'sometimes' : 'required',
                 'string',
                 'max:50',
-                Rule::unique('proveedores', 'nit_provvedor')->ignore($proveedorNit, 'nit_provvedor')
+                Rule::unique('proveedores', 'nit_proveedor')->ignore($proveedorNit, 'nit_provvedor')
             ],
             'nombre_proveedor' => [
                 $isUpdate ? 'sometimes' : 'required',
@@ -37,7 +37,7 @@ class RequestProveedor extends FormRequest
                 'max:20',
             ],
             'correo_proveedor' => [
-                'required',
+                'nullable',
                 'email',
                 'max:255',
                 Rule::unique('proveedores', 'correo_proveedor')->ignore($proveedorNit, 'nit_provvedor')
@@ -53,8 +53,8 @@ class RequestProveedor extends FormRequest
     public function messages(): array
     {
         return [
-            'nit_provvedor.required' => 'El NIT del proveedor es obligatorio.',
-            'nit_provvedor.unique' => 'Este NIT ya se encuentra registrado.',
+            'nit_proveedor.required' => 'El NIT del proveedor es obligatorio.',
+            'nit_proveedor.unique' => 'Este NIT ya se encuentra registrado.',
             
             'nombre_proveedor.required' => 'El nombre del proveedor es obligatorio.',
             'nombre_proveedor.string' => 'El nombre debe ser texto.',

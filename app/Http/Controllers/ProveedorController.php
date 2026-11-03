@@ -39,7 +39,7 @@ class ProveedorController extends Controller
 
         if (!$registro) {
             return response()->json([
-                'message' => 'Manito no se encontró el registro con ese nit'
+                'message' => 'No se encontró el registro con ese nit'
             ], 404);
         }
 
@@ -56,7 +56,7 @@ class ProveedorController extends Controller
 
         if (!$registroActualizado) {
             return response()->json([
-                'message' => 'Manito no se encontró el registro con ese nit'
+                'message' => 'No se encontró el registro con ese nit'
             ], 404);
         }
 
@@ -73,7 +73,7 @@ class ProveedorController extends Controller
         
         if (!$validar) {
             return response()->json([
-                'message' => 'Manito no se encontró el registro con ese nit'
+                'message' => 'No se encontró el registro con ese nit'
             ], 404);
         }
 
