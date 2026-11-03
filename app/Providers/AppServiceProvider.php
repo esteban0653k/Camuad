@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+// Importaciones de la entidad Cliente (Módulo de Ventas - Esteban)
+use App\Interfaces\ClienteInterface;
+use App\Repositories\ClienteRepository;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -11,7 +15,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Vinculación de la entidad Cliente con su Repositorio correspondiente
+        $this->app->bind(ClienteInterface::class, ClienteRepository::class);
     }
 
     /**
