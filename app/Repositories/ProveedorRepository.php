@@ -18,7 +18,7 @@ class ProveedorRepository extends BaseRepository implements ProveedorInterface
         
     }
     
-    public function findByCorreo(string $nit)
+    public function findByCorreo(string $correo)
     {
         return $this->model->where("correo_proveedor", "LIKE", "%". $correo. "%")->get();
     }
