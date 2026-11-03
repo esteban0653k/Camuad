@@ -2,9 +2,9 @@
 namespace App\Repositories;
 
 use App\Models\Marca;
-use App\Interfaces\MarcaRepositoryInterface;
+use App\Interfaces\MarcaInterface;
 
-class MarcaRepository extends BaseRepository implements MarcaRepositoryInterface {
+class MarcaRepository extends BaseRepository implements MarcaInterface {
     public function __construct(Marca $model) {
         parent::__construct($model);
     }

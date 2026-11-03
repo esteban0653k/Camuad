@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Interfaces\MarcaRepositoryInterface;
+use App\Interfaces\MarcaInterface;
 
 class MarcaService {
-    protected MarcaRepositoryInterface $marcaRepository;
+    protected MarcaInterface $marcaRepository;
 
-    public function __construct(MarcaRepositoryInterface $marcaRepository) {
+    public function __construct(MarcaInterface $marcaRepository) {
         $this->marcaRepository = $marcaRepository;
     }
 

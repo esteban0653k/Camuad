@@ -1,6 +1,5 @@
 <?php
-
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Services\MarcaService;
@@ -47,7 +46,7 @@ class MarcaController extends Controller {
         return response()->json(['success' => true, 'message' => 'Marca eliminada correctamente'], 200);
     }
 
-    // Endpoints para los métodos personalizados
+    
     public function buscar(Request $request) {
         $nombre = $request->query('nombre', '');
         return response()->json(['success' => true, 'data' => $this->marcaService->buscarPorNombre($nombre)], 200);
