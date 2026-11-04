@@ -12,13 +12,16 @@ use App\Repositories\ProveedorRepository;
 use App\Interfaces\FacturaInterface;
 use App\Repositories\FacturaRepository;
 
+use App\Interfaces\CategoriasInterface;
+use App\Repositories\CategoriasRepository;
+
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
         $this->app->bind(ClienteInterface::class, ClienteRepository::class);
-        $this->app->bind(ProveedorInterface::class, ProveedorRepository::class);
-        $this->app->bind(FacturaInterface::class, FacturaRepository::class);
+        $this->app->bind(MarcaInterface::class, MarcaRepository::class);
+        $this->app->bind(CategoriasInterface::class, CategoriasRepository::class);
     }
 
     public function boot(): void
