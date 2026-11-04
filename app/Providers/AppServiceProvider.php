@@ -4,11 +4,13 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+// Importaciones de Interfaces y Repositorios
 use App\Interfaces\ClienteInterface;
 use App\Repositories\ClienteRepository;
-
-use App\Interfaces\MarcaInterface;
-use App\Repositories\MarcaRepository;
+use App\Interfaces\ProveedorInterface;
+use App\Repositories\ProveedorRepository;
+use App\Interfaces\FacturaInterface;
+use App\Repositories\FacturaRepository;
 
 use App\Interfaces\CategoriasInterface;
 use App\Repositories\CategoriasRepository;
