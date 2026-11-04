@@ -14,22 +14,15 @@ use App\Repositories\FacturaRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        // Vinculación de la entidad Cliente con su Repositorio correspondiente
         $this->app->bind(ClienteInterface::class, ClienteRepository::class);
         $this->app->bind(ProveedorInterface::class, ProveedorRepository::class);
         $this->app->bind(FacturaInterface::class, FacturaRepository::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        //
+        
     }
 }
