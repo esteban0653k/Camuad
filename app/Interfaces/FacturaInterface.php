@@ -2,6 +2,6 @@
 
 namespace App\Interfaces;
 
-interface FacturaRepositoryInterface extends BaseInterface {
+interface FacturaInterface extends BaseInterface {
     public function getFacturasConCliente();
 }
