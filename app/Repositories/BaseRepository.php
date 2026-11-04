@@ -19,7 +19,7 @@ class BaseRepository implements BaseInterface
         return $this->model->all();  
     }
 
-    public function getById(int|string $id)
+    public function getById(int $id)
     {
         $registro = $this->model->find($id);  
 
