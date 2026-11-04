@@ -5,97 +5,93 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Services\ClienteService;
 use App\Http\Requests\ClienteRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ClienteController extends Controller
 {
-    protected ClienteService $clienteService;
-
-    public function __construct(ClienteService $clienteService)
+    public function __construct(private ClienteService $clienteService)
     {
-        $this->clienteService = $clienteService;
     }
 
-    public function index()
+    public function index(): JsonResponse
     {
         $clientes = $this->clienteService->listarClientes();
+
         return response()->json([
-            'success' => true,
-            'data' => $clientes
+            'message' => 'Se listaron los clientes correctamente',
+            'data'    => $clientes
         ], 200);
     }
 
-    public function store(ClienteRequest $request)
+    public function store(ClienteRequest $request): JsonResponse
     {
-        // Los datos ya vienen validados gracias al Form Request
         $cliente = $this->clienteService->crearCliente($request->validated());
 
         return response()->json([
-            'success' => true,
-            'message' => 'Cliente registrado exitosamente',
-            'data' => $cliente
+            'message' => 'El cliente se creó correctamente',
+            'data'    => $cliente
         ], 201);
     }
 
-    public function show($numero_documento)
+    public function show(string $id): JsonResponse
     {
-        $cliente = $this->clienteService->obtenerClientePorId($numero_documento);
+        $cliente = $this->clienteService->obtenerClientePorId($id);
 
         if (!$cliente) {
             return response()->json([
-                'success' => false,
-                'message' => 'Cliente no encontrado'
+                'message' => 'No se encontró el cliente con ese número de documento'
             ], 404);
         }
 
         return response()->json([
-            'success' => true,
-            'data' => $cliente
+            'message' => 'Se listó el cliente correctamente',
+            'data'    => $cliente
         ], 200);
     }
 
-    public function update(ClienteRequest $request, $numero_documento)
+
+    public function update(ClienteRequest $request, string $id): JsonResponse
     {
-        $clienteActualizado = $this->clienteService->actualizarCliente($numero_documento, $request->validated());
+        $clienteActualizado = $this->clienteService->actualizarCliente($id, $request->validated());
 
         if (!$clienteActualizado) {
             return response()->json([
-                'success' => false,
-                'message' => 'No se pudo actualizar, cliente no encontrado'
+                'message' => 'No se encontró el cliente con ese número de documento'
             ], 404);
         }
 
         return response()->json([
-            'success' => true,
-            'message' => 'Cliente actualizado correctamente',
-            'data' => $clienteActualizado
+            'message' => 'Se actualizó el cliente correctamente',
+            'data'    => $clienteActualizado
         ], 200);
     }
 
-    public function destroy($numero_documento)
+
+    public function destroy(string $id): JsonResponse
     {
-        $eliminado = $this->clienteService->eliminarCliente($numero_documento);
+        $validar = $this->clienteService->eliminarCliente($id);
 
-        if (!$eliminado) {
+        if (!$validar) {
             return response()->json([
-                'success' => false,
-                'message' => 'Cliente no encontrado para eliminar'
+                'message' => 'No se encontró el cliente con ese número de documento'
             ], 404);
         }
 
         return response()->json([
-            'success' => true,
-            'message' => 'Cliente eliminado correctamente'
+            'message' => 'El cliente se eliminó correctamente',
         ], 200);
     }
-    public function getNombre(Request $request)
+
+    
+    public function getNombre(Request $request): JsonResponse
     {
         $nombre = $request->query('nombre', '');
         $clientes = $this->clienteService->buscarClientesPorNombre($nombre);
 
         return response()->json([
-            'success' => true,
-            'data' => $clientes
+            'message' => 'Resultados de la búsqueda',
+            'data'    => $clientes
         ], 200);
     }
 }

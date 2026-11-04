@@ -2,7 +2,7 @@
 
     namespace App\Interfaces;
 
-    interface CLienteInterface extends BaseInterface
+    interface ClienteInterface extends BaseInterface 
     {
         public function findByNombre(string $nombre);
     }
