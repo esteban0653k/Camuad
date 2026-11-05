@@ -8,17 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('productos', function (Blueprint $table) {
-            $table->id('id_producto');
+        Schema::create('producto', function (Blueprint $table) {
+            
+            $table->string('sku', 100)->primary();
+            
             $table->string('nombre_producto');
-            $table->string('sku')->unique();
-            $table->decimal('precio', 10, 5);
+            $table->decimal('precio', 10, 2);
             $table->integer('stock')->default(0);
             $table->text('descripcion')->nullable();
             
             
             $table->foreignId('id_categoria')->constrained('categorias', 'id')->onDelete('cascade');
-            $table->foreignId('id_marca')->constrained('marca', 'id_marca')->onDelete('cascade');
+            $table->foreignId('id_marca')->constrained('marcas', 'id_marca')->onDelete('cascade');
             
             $table->timestamps();
         });
@@ -26,6 +27,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('productos');
+        Schema::dropIfExists('producto');
     }
 };

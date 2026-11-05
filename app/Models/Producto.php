@@ -10,18 +10,27 @@ class Producto extends Model
 {
     use HasFactory;
 
-    protected $table = 'productos';
-    protected $primaryKey = 'id_producto';
+    protected $table = 'producto';
+    
+    
+    protected $primaryKey = 'sku';
+    public $incrementing = false;  
+    protected $keyType = 'string'; 
 
     protected $fillable = [
+        'sku', 
         'nombre_producto',
-        'sku',
         'precio',
         'stock',
         'descripcion',
         'id_categoria',
         'id_marca',
     ];
+
+    public function getRouteKeyName(): string
+    {
+        return 'sku';
+    }
 
     public function categoria(): BelongsTo
     {
