@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignId('id_marca')->constrained('marca', 'id_marca')->onDelete('cascade');
             
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
