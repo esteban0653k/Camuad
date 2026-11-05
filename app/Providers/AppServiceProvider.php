@@ -11,6 +11,8 @@ use App\Interfaces\ProveedorInterface;
 use App\Repositories\ProveedorRepository;
 use App\Interfaces\FacturaInterface;
 use App\Repositories\FacturaRepository;
+use App\Interfaces\DetalleVentaInterface;
+use App\Repositories\DetalleVentaRepository;
 
 use App\Interfaces\CategoriasInterface;
 use App\Repositories\CategoriasRepository;
@@ -22,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ClienteInterface::class, ClienteRepository::class);
         $this->app->bind(MarcaInterface::class, MarcaRepository::class);
         $this->app->bind(CategoriasInterface::class, CategoriasRepository::class);
+        $this->app->bind(DetalleVentaInterface::class, DetalleVentaRepository::class);
     }
 
     public function boot(): void
