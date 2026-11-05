@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\ProductoRequest;
 use App\Services\ProductoService;
 use Illuminate\Http\JsonResponse;
@@ -87,6 +88,18 @@ class ProductoController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Producto eliminado exitosamente'
+        ], 200);
+    }
+
+    public function buscarPorNombre(Request $request): JsonResponse
+    {
+        $nombre = $request->query('nombre', '');
+
+        $productos = $this->productoService->buscarPorNombre($nombre);
+
+        return response()->json([
+            'success' => true,
+            'data' => $productos
         ], 200);
     }
 }
