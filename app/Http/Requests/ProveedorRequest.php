@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class RequestProveedor extends FormRequest
+class ProveedorRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -24,7 +24,7 @@ class RequestProveedor extends FormRequest
                 $isUpdate ? 'sometimes' : 'required',
                 'string',
                 'max:50',
-                Rule::unique('proveedores', 'nit_proveedor')->ignore($proveedorNit, 'nit_provvedor')
+                Rule::unique('proveedor', 'nit_proveedor')->ignore($proveedorNit, 'nit_proveedor')
             ],
             'nombre_proveedor' => [
                 $isUpdate ? 'sometimes' : 'required',
@@ -40,7 +40,7 @@ class RequestProveedor extends FormRequest
                 'nullable',
                 'email',
                 'max:255',
-                Rule::unique('proveedores', 'correo_proveedor')->ignore($proveedorNit, 'nit_provvedor')
+                Rule::unique('proveedor', 'correo_proveedor')->ignore($proveedorNit, 'nit_proveedor')
             ],
             'direccion' => [
                 'nullable',
