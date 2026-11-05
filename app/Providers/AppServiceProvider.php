@@ -4,30 +4,48 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-// Importaciones de la entidad Cliente (Módulo de Ventas - Esteban)
+// Importaciones de Interfaces y Repositorios
 use App\Interfaces\ClienteInterface;
 use App\Repositories\ClienteRepository;
 use App\Interfaces\ProveedorInterface;
 use App\Repositories\ProveedorRepository;
+use App\Interfaces\FacturaInterface;
+use App\Repositories\FacturaRepository;
+use App\Interfaces\CategoriasInterface;
+use App\Repositories\CategoriasRepository;
+use App\Interfaces\MarcaInterface;
+use App\Repositories\MarcaRepository;
+use App\Interfaces\ProductoInterface;
+use App\Repositories\ProductoRepository;
+use App\Interfaces\DetalleVentaInterface;
+use App\Repositories\DetalleVentaRepository;
+use App\Interfaces\StockInterface;
+use App\Repositories\StockRepository;
+use App\Interfaces\SolicitudStockInterface;
+use App\Repositories\SolicitudStockRepository;
+
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        // Vinculación de la entidad Cliente con su Repositorio correspondiente
         $this->app->bind(ClienteInterface::class, ClienteRepository::class);
+
         $this ->app->bind(ProveedorInterface::class, ProveedorRepository::class);
         $this->app->bind(StockInterface::class, StockRepository::class);
+
+        $this->app->bind(ProveedorInterface::class, ProveedorRepository::class);
+        $this->app->bind(FacturaInterface::class, FacturaRepository::class);
+        $this->app->bind(MarcaInterface::class, MarcaRepository::class);
+        $this->app->bind(CategoriasInterface::class, CategoriasRepository::class);
+        $this->app->bind(ProductoInterface::class, ProductoRepository::class);
+        $this->app->bind(DetalleVentaInterface::class, DetalleVentaRepository::class);
+        $this->app->bind(SolicitudStockInterface::class, SolicitudStockRepository::class);
+
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        //
+        
     }
 }

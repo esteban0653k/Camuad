@@ -22,7 +22,7 @@ class ProveedorController extends Controller
         ], 200);
     }
 
-    public function store(RequestProveedor $request)
+    public function store(ProveedorRequest $request)
     {
         $registroProveedor = $this->proveedorService->create($request->validated());
              
@@ -48,7 +48,7 @@ class ProveedorController extends Controller
         ], 200);
     }
 
-    public function update(RequestProveedor $request, string $id)
+    public function update(ProveedorRequest $request, string $id)
     {
         $registroActualizado = $this->proveedorService->update($id, $request->validated());
 

@@ -41,7 +41,7 @@ class StockRequest extends FormRequest
                 $isUpdate ? 'sometimes' : 'required',
                 'string',
                 'max:100',
-                'exists:productos,sku',
+                'exists:producto,sku',
             ],
         ];
     }

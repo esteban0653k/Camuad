@@ -22,7 +22,7 @@ return new class extends Migration
             $table->boolean('notificado')->default(false);
 
             $table->string('producto', 100); 
-            $table->foreign('producto')->references("SKU")->on("productos")->onDelete("cascade");
+            $table->foreign('producto')->references("sku")->on("producto")->onDelete("cascade");
 
             $table->timestamps();
             $table->softDeletes();

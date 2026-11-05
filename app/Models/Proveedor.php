@@ -16,6 +16,7 @@ class Proveedor extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'nit_proveedor',
         'nombre_proveedor',
         'telefono',
         'correo_proveedor',

@@ -16,14 +16,14 @@ class BaseRepository implements BaseInterface
 
     public function getAll()
     {
-        return $this->model->all();  
+        return $this->model->all();
     }
 
     public function getById(int|string $id)
     {
-        $registro = $this->model->find($id);  
+        $registro = $this->model->find($id);
 
-        if(!$registro) {
+        if (!$registro) {
             return null;
         }
 
@@ -32,14 +32,14 @@ class BaseRepository implements BaseInterface
 
     public function create(array $data)
     {
-        return $this->model->create($data); 
+        return $this->model->create($data);
     }
 
     public function update(int|string $id, array $data)
     {
         $registro = $this->model->find($id);
 
-        if(!$registro) {
+        if (!$registro) {
             return null;
         }
 
@@ -51,11 +51,11 @@ class BaseRepository implements BaseInterface
     public function delete(int|string $id)
     {
         $registro = $this->model->find($id);
-        
-        if(!$registro) {
+
+        if (!$registro) {
             return null;
         }
-        
+
         return $registro->delete();
     }
 }
