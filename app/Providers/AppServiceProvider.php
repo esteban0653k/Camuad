@@ -17,15 +17,20 @@ use App\Interfaces\MarcaInterface;
 use App\Repositories\MarcaRepository;
 use App\Interfaces\ProductoInterface;
 use App\Repositories\ProductoRepository;
+use App\Interfaces\DetalleVentaInterface;
+use App\Repositories\DetalleVentaRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
         $this->app->bind(ClienteInterface::class, ClienteRepository::class);
+        $this->app->bind(ProveedorInterface::class, ProveedorRepository::class);
+        $this->app->bind(FacturaInterface::class, FacturaRepository::class);
         $this->app->bind(MarcaInterface::class, MarcaRepository::class);
         $this->app->bind(CategoriasInterface::class, CategoriasRepository::class);
         $this->app->bind(ProductoInterface::class, ProductoRepository::class);
+        $this->app->bind(DetalleVentaInterface::class, DetalleVentaRepository::class);
     }
 
     public function boot(): void
