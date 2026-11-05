@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Interfaces\StockInterface;
 use App\Models\SolicitudStock;
+use App\Models\Usuario;
+use App\Notifications\StockLowNotification;
 
 class StockService
 {
@@ -49,15 +51,24 @@ class StockService
         return $this->stockRepository->findLowStock();
     }
 
-    public function getLowStock()
+    public function procesarAlertasYSolicitudesStock()
     {
-        $itemsBajos = $this->stockRepository->findLowStock();
+        $itemsBajos = $this->stockRepository->findLowStockUnnotified();
 
         if ($itemsBajos->isEmpty()) {
             return $itemsBajos;
         }
 
+        $admin = Usuario::find(1); 
+
         foreach ($itemsBajos as $stock) {
+            
+            if ($admin) {
+                $admin->notify(new StockLowNotification($stock));
+            }
+
+            $this->stockRepository->update($stock->id_compra, ['notificado' => true]);
+
             $existeSolicitud = SolicitudStock::where('stock', $stock->id_compra)
                 ->where('estado', 'pendiente')
                 ->exists();
@@ -65,7 +76,7 @@ class StockService
             if (!$existeSolicitud) {
                 SolicitudStock::create([
                     'stock' => $stock->id_compra,
-                    'cantidad_solicitada' => $stock->cantidad_min_stock * 2,  
+                    'cantidad_solicitada' => $stock->cantidad_min_stock, 
                     'estado' => 'pendiente' 
                 ]);
             }

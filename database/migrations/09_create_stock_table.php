@@ -18,10 +18,11 @@ return new class extends Migration
             $table->date("fecha_compra");
             $table->integer("cantidad")->nullable();
             $table->integer("cantidad_min_stock")->nullable();
-            $table->boolean("activo");
+            $table->enum("estado", ["activo", "pendiente", "inactivo"]);
+            $table->boolean('notificado')->default(false);
 
-            $table->unsignedBigInteger("producto"); 
-            $table->foreign("producto")->references("id")->on("productos")->onDelete("cascade");
+            $table->string('producto', 100); 
+            $table->foreign('producto')->references("SKU")->on("productos")->onDelete("cascade");
 
             $table->timestamps();
             $table->softDeletes();

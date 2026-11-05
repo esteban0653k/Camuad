@@ -2,9 +2,10 @@
 
 namespace App\Interfaces;
 
-interface ProveedorInterface extends BaseInterface
+interface StockInterface extends BaseInterface
 {
-    public function findByEstado(bool $activo);
+    public function findByActivo(bool $activo);
     public function findFechaCompra(string $fecha);
     public function findLowStock();
+    public function findLowStockUnnotified();
 }   

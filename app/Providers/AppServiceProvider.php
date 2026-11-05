@@ -20,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
         // Vinculación de la entidad Cliente con su Repositorio correspondiente
         $this->app->bind(ClienteInterface::class, ClienteRepository::class);
         $this ->app->bind(ProveedorInterface::class, ProveedorRepository::class);
+        $this->app->bind(StockInterface::class, StockRepository::class);
     }
 
     /**

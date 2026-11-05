@@ -20,12 +20,13 @@ class Stock extends Model
         'fecha_compra',
         'cantidad',
         'cantidad_min_stock',
-        'activo',
+        'estado',
+        'notificado',
         'producto'
     ];
 
     public function productos(){
-         return $this->belongsTo(Producto::class, 'producto', 'id'); 
+         return $this->belongsTo(Producto::class, 'producto', 'sku'); 
     }
 
     public function estadisticas(){

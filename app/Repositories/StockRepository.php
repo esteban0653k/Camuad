@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Repositories;
+
 use App\Models\Stock;
-use App\Repositories\StockRepository;
 use App\Interfaces\StockInterface;
 
 class StockRepository extends BaseRepository implements StockInterface
@@ -14,8 +14,9 @@ class StockRepository extends BaseRepository implements StockInterface
 
     public function findByActivo(bool $activo)
     {
-        return $this->model->where("activo", $activo)->get();
-        
+        $estadoBusqueda = $activo ? 'activo' : 'inactivo';
+
+        return $this->model->where("estado", $estadoBusqueda)->get();
     }
     
     public function findFechaCompra(string $fecha)
@@ -23,8 +24,16 @@ class StockRepository extends BaseRepository implements StockInterface
         return $this->model->whereDate("fecha_compra", $fecha)->get();
     }
 
-   public function findLowStock()
+    public function findLowStock()
     {
         return $this->model->whereColumn("cantidad", "<=", "cantidad_min_stock")->get();
     }
-} 
+
+    public function findLowStockUnnotified()
+    {
+        return $this->model
+            ->whereColumn("cantidad", "<=", "cantidad_min_stock")
+            ->where("notificado", false)
+            ->get();
+    }
+}
