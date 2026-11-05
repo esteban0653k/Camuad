@@ -18,9 +18,9 @@ class ProductoService
         return $this->productoRepository->obtenerProductosConRelaciones();
     }
 
-    public function obtenerProductoPorId(int $id)
+    public function obtenerProductoPorId(string $sku)
     {
-        return $this->productoRepository->getById($id);
+        return $this->productoRepository->getById($sku);
     }
 
     public function crearProducto(array $datos)
@@ -28,13 +28,13 @@ class ProductoService
         return $this->productoRepository->create($datos);
     }
 
-    public function actualizarProducto(int $id, array $datos)
+    public function actualizarProducto(string $sku, array $datos)
     {
-        return $this->productoRepository->update($id, $datos);
+        return $this->productoRepository->update($sku, $datos);
     }
 
-    public function eliminarProducto(int $id)
+    public function eliminarProducto(string $sku)
     {
-        return $this->productoRepository->delete($id);
+        return $this->productoRepository->delete($sku);
     }
 }

@@ -19,7 +19,7 @@ return new class extends Migration
             
             
             $table->foreignId('id_categoria')->constrained('categorias', 'id')->onDelete('cascade');
-            $table->foreignId('id_marca')->constrained('marcas', 'id_marca')->onDelete('cascade');
+            $table->foreignId('id_marca')->constrained('marca', 'id_marca')->onDelete('cascade');
             
             $table->timestamps();
         });

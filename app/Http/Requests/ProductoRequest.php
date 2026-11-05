@@ -22,7 +22,7 @@ class ProductoRequest extends FormRequest
             'stock' => 'required|integer|min:0',
             'descripcion' => 'nullable|string',
             'id_categoria' => 'required|exists:categorias,id',
-            'id_marca' => 'required|exists:marcas,id_marca',];
+            'id_marca' => 'required|exists:marca,id_marca',];
     }
 
     public function messages(): array
