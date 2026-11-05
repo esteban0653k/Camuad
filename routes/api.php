@@ -5,7 +5,9 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\CategoriasController;
-use App\Http\Controllers\DetalleVentaController;
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\MarcaController;
+use App\Http\Controllers\ProductoController;
 
 Route::prefix('v1')->group(function(){
     // Api Proveedores
@@ -24,8 +26,8 @@ Route::prefix('v1')->group(function(){
     Route::get('categorias/con-productos', [CategoriasController::class, 'conProductos']);
     Route::apiResource('categorias', CategoriasController::class);
 
-    //Api factura
-    Route::apiResource('detalles-venta', DetalleVentaController::class);
+    //Api productos
+    Route::apiResource('productos', ProductoController::class);
 });
 
 
