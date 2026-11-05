@@ -10,6 +10,9 @@ use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\DetalleVentaController;
+use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\RolController;
+
 
 Route::prefix('v1')->group(function(){
     // Api Proveedores
@@ -38,4 +41,8 @@ Route::prefix('v1')->group(function(){
 
     // Api Detalle Venta
     Route::apiResource('detalles-venta', DetalleVentaController::class);
+    // Api Usuarios
+    Route::apiResource('usuarios', UsuarioController::class);
+    // Api Roles
+    Route::apiResource('roles', RolController::class);
 });

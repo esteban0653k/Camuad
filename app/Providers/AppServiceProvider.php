@@ -19,6 +19,10 @@ use App\Interfaces\ProductoInterface;
 use App\Repositories\ProductoRepository;
 use App\Interfaces\DetalleVentaInterface;
 use App\Repositories\DetalleVentaRepository;
+use App\Interfaces\UsuarioInterface;
+use App\Repositories\UsuarioRepository;
+use App\Interfaces\RolInterface;
+use App\Repositories\RolRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,6 +35,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CategoriasInterface::class, CategoriasRepository::class);
         $this->app->bind(ProductoInterface::class, ProductoRepository::class);
         $this->app->bind(DetalleVentaInterface::class, DetalleVentaRepository::class);
+        $this->app->bind(UsuarioInterface::class, UsuarioRepository::class);
+        $this->app->bind(RolInterface::class, RolRepository::class);
     }
 
     public function boot(): void
