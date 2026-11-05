@@ -37,4 +37,9 @@ class ProductoService
     {
         return $this->productoRepository->delete($sku);
     }
+    
+    public function buscarPorNombre(string $nombre)
+    {
+        return $this->productoRepository->buscarPorNombre($nombre);
+    }
 }

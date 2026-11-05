@@ -27,6 +27,7 @@ Route::prefix('v1')->group(function(){
     Route::apiResource('categorias', CategoriasController::class);
 
     //Api productos
+    Route::get('productos/buscar', [ProductoController::class, 'buscarPorNombre']);
     Route::apiResource('productos', ProductoController::class);
 });
 
