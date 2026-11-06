@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Estadisticas extends Model
+class Estadistica extends Model
 {
     use SoftDeletes;
 
@@ -21,12 +21,13 @@ class Estadisticas extends Model
         'stock'
     ];
 
+    // Relación con Reporte
     public function reporte()
     {
         return $this->belongsTo(Reporte::class, 'id_reporte', 'id_reporte');
     }
 
-    
+    // Relación con Stock
     public function stockItem()
     {
         return $this->belongsTo(Stock::class, 'stock', 'id_compra');

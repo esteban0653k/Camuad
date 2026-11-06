@@ -14,6 +14,7 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\EstadisticaController;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\StockController;
 
 
 Route::prefix('v1')->group(function(){
@@ -24,7 +25,14 @@ Route::prefix('v1')->group(function(){
 
     // Api Clientes
     Route::get('clientes/buscar', [ClienteController::class, 'getNombre']);
-    Route::apiResource('clientes', ClienteController::class);
+Route::apiResource('clientes', ClienteController::class);
+
+//Api Stock
+    Route::get("stock/activos", [StockController::class, "listarStockActivo"]);
+    Route::post("stock/verificar-alertas", [StockController::class, "verificarAlertasManual"]);
+    Route::get("stock/fecha/{fecha}", [StockController::class, "findFechaCompra"]);
+
+    Route::apiResource('stock', StockController::class);
 
     // Api Marcas
     Route::get('marcas/buscar', [MarcaController::class, 'buscar']);

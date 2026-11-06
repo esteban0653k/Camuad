@@ -27,12 +27,16 @@ use App\Interfaces\EstadisticaInterface;
 use App\Repositories\EstadisticaRepository;
 use App\Interfaces\ReporteInterface;
 use App\Repositories\ReporteRepository;
+use App\Interfaces\StockInterface;
+use App\Repositories\StockRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
         $this->app->bind(ClienteInterface::class, ClienteRepository::class);
+        $this->app->bind(ProveedorInterface::class, ProveedorRepository::class);
+        $this->app->bind(StockInterface::class, StockRepository::class);
         $this->app->bind(ProveedorInterface::class, ProveedorRepository::class);
         $this->app->bind(FacturaInterface::class, FacturaRepository::class);
         $this->app->bind(MarcaInterface::class, MarcaRepository::class);
