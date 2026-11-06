@@ -23,8 +23,8 @@ class DetalleVentaRequest extends FormRequest
             ],
             'id_producto' => [
                 $isUpdate ? 'sometimes' : 'required',
-                'integer',
-                'exists:productos,id_producto'
+                'string',
+                'exists:productos,sku'
             ],
             'cantidad' => [
                 $isUpdate ? 'sometimes' : 'required',
@@ -35,6 +35,11 @@ class DetalleVentaRequest extends FormRequest
                 $isUpdate ? 'sometimes' : 'required',
                 'numeric',
                 'min:0'
+            ],
+            'estado_venta' => [
+                'required',
+                'string',
+                'max:50'
             ]
         ];
     }

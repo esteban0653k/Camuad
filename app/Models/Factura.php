@@ -17,6 +17,9 @@ class Factura extends Model
     protected $fillable = [
         'numero_documento_cliente',
         'fecha_factura',
+        'metodo_pago',  
+        'monto_recibido', 
+        'cambio',
         'subtotal',
         'iva',
         'descuento',

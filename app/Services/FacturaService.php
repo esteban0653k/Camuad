@@ -70,16 +70,32 @@ class FacturaService
             $descuento = $data['descuento'] ?? 0;
             $totalGeneral = ($subtotalGeneral + $ivaGeneral) - $descuento;
 
-            // 6. Crear la cabecera de la factura en la base de datos
+            // 6. Gestionar campos financieros nuevos (Método de pago, monto recibido y cambio)
+            $metodoPago = $data['metodo_pago'] ?? 'Efectivo';
+            $montoRecibido = $data['monto_recibido'] ?? $totalGeneral;
+            
+            // Cálculo automático del cambio (si el monto recibido es mayor al total)
+            $cambio = isset($data['monto_recibido']) ? max(0, $data['monto_recibido'] - $totalGeneral) : 0;
+
+            // Validar si el dinero en efectivo es menor al total a pagar
+            if ($metodoPago === 'Efectivo' && $montoRecibido < $totalGeneral) {
+                throw ValidationException::withMessages([
+                    'monto_recibido' => ["El monto recibido es menor que el total de la factura."]
+                ]);
+            }
+
+            // 7. Crear la cabecera de la factura en la base de datos
             $factura = $this->facturaRepository->create([
                 'numero_documento_cliente' => $data['numero_documento_cliente'],
                 'fecha_factura'            => now(),
+                'metodo_pago'              => $metodoPago,
+                'monto_recibido'           => $montoRecibido,
+                'cambio'                   => $cambio,
                 'subtotal'                 => $subtotalGeneral,
                 'iva'                      => $ivaGeneral,
                 'descuento'                => $descuento,
                 'total'                    => $totalGeneral
             ]);
-
             // 7. Guardar los detalles vinculados a la factura creada
             foreach ($detallesCalculados as $detalle) {
                 $factura->detalles()->create([
@@ -114,9 +130,17 @@ class FacturaService
         $ivaGeneral = $subtotalGeneral * 0.19;
         $totalGeneral = ($subtotalGeneral + $ivaGeneral) - $descuento;
 
+        // Manejar actualización de pagos si se envían
+        $metodoPago = $data['metodo_pago'] ?? $factura->metodo_pago;
+        $montoRecibido = $data['monto_recibido'] ?? $factura->monto_recibido;
+        $cambio = isset($data['monto_recibido']) ? max(0, $data['monto_recibido'] - $totalGeneral) : $factura->cambio;
+
         // 4. Consolidar los datos ya recalculados
         $dataActualizada = [
             'numero_documento_cliente' => $data['numero_documento_cliente'] ?? $factura->numero_documento_cliente,
+            'metodo_pago'              => $metodoPago,
+            'monto_recibido'           => $montoRecibido,
+            'cambio'                   => $cambio,
             'descuento'                => $descuento,
             'iva'                      => $ivaGeneral,
             'total'                    => $totalGeneral

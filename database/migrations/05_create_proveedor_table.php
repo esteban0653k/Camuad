@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('proveedor', function (Blueprint $table) {
-           
             $table->string("nit_proveedor", 20)->primary();
             $table->string("nombre_proveedor", 50)->unique();
             $table->string("telefono", 20)->nullable();

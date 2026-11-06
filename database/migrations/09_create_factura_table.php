@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id('id_factura');
             $table->string('numero_documento_cliente'); 
             $table->dateTime('fecha_factura');
+            $table->string('metodo_pago', 50)->nullable();
+            $table->decimal('monto_recibido', 10, 2)->nullable();
+            $table->decimal('cambio', 10, 2)->nullable();
             $table->decimal('subtotal', 10, 2);
             $table->decimal('iva', 10, 2);
             $table->decimal('descuento', 10, 2)->default(0);

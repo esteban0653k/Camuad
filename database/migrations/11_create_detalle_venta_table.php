@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('cantidad');
             $table->decimal('precio_unitario', 10, 2);
             $table->decimal('subtotal', 10, 2);
+            $table->string('estado_venta', 50)->default('Incompleto');
 
             $table->timestamps();
             $table->softDeletes();
