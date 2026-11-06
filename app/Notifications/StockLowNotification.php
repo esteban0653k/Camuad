@@ -32,7 +32,7 @@ class StockLowNotification extends Notification
     {
         return (new MailMessage)
                     ->subject('¡Alerta de Stock Bajo!')
-                    ->greeting('Hola, ' . $notifiable->name)
+                    ->greeting('Hola, ' . $notifiable->nombre)
                     ->line("El producto con SKU: {$this->stock->producto} ha alcanzado un nivel crítico de inventario.")
                     ->line("Cantidad actual: {$this->stock->cantidad}")
                     ->line("Stock mínimo permitido: {$this->stock->cantidad_min_stock}")

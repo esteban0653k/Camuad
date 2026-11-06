@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id('id_compra');
 
             $table->date("fecha_compra");
-            $table->integer("cantidad")->nullable();
-            $table->integer("cantidad_min_stock")->nullable();
+            $table->integer("cantidad");
+            $table->integer("cantidad_min_stock");
             $table->enum("estado", ["activo", "pendiente", "inactivo"]);
             $table->boolean('notificado')->default(false);
 

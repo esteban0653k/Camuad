@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\DetalleVentaController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\SolicitudStockController;
 
 
 Route::prefix('v1')->group(function(){
@@ -21,15 +22,14 @@ Route::prefix('v1')->group(function(){
 
     // Api Clientes
     Route::get('clientes/buscar', [ClienteController::class, 'getNombre']);
-    Route::apiResource('clientes', ClienteController::class);
+Route::apiResource('clientes', ClienteController::class);
 
-
-    //Api Stock
+//Api Stock
     Route::get("stock/activos", [StockController::class, "listarStockActivo"]);
     Route::post("stock/verificar-alertas", [StockController::class, "verificarAlertasManual"]);
     Route::get("stock/fecha/{fecha}", [StockController::class, "findFechaCompra"]);
-    Route::apiResource('stock', StockController::class);
 
+    Route::apiResource('stock', StockController::class);
 
     // Api Marcas
     Route::get('marcas/buscar', [MarcaController::class, 'buscar']);
@@ -50,5 +50,6 @@ Route::prefix('v1')->group(function(){
     Route::apiResource('detalles-venta', DetalleVentaController::class);
 
     //Api Solicitud Stock
-    Route::apiResource('solicitud-stock', SolicitudStockController::class);
+    Route::apiResource('solicitud_stock', SolicitudStockController::class);
+
 });
