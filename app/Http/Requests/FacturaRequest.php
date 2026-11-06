@@ -21,33 +21,20 @@ class FacturaRequest extends FormRequest
                 'string',
                 'exists:cliente,numero_documento'
             ],
-            'subtotal' => [
-                $isUpdate ? 'sometimes' : 'required',
-                'numeric',
-                'min:0'
-            ],
-            'iva' => [
-                $isUpdate ? 'sometimes' : 'required',
-                'numeric',
-                'min:0'
-            ],
             'descuento' => [
                 'nullable',
                 'numeric',
                 'min:0'
             ],
-            'total' => [
-                $isUpdate ? 'sometimes' : 'required',
-                'numeric',
-                'min:0'
-            ],
             'detalles' => [
-                'nullable',
-                'array'
+                $isUpdate ? 'nullable' : 'required',
+                'array',
+                'min:1'
             ],
             'detalles.*.id_producto' => [
                 'required_with:detalles',
-                'integer'
+                'string', // Coincide con el SKU del producto
+                'exists:producto,sku'
             ],
             'detalles.*.cantidad' => [
                 'required_with:detalles',
@@ -65,11 +52,11 @@ class FacturaRequest extends FormRequest
     public function messages(): array 
     {
         return [
-            'numero_documento_cliente.exists'   => 'El cliente especificado no se encuentra registrado.',
+            'numero_documento_cliente.exists'   => 'El cliente especificado no existe.',
             'numero_documento_cliente.required' => 'El documento del cliente es obligatorio.',
-            'subtotal.required'                 => 'El subtotal es obligatorio.',
-            'iva.required'                      => 'El IVA es obligatorio.',
-            'total.required'                    => 'El valor total de la factura es obligatorio.'
+            'detalles.required'                 => 'La factura debe contener al menos un detalle de venta.',
+            'detalles.*.id_producto.exists'     => 'El producto especificado no existe en el inventario.',
+            'detalles.*.cantidad.min'           => 'La cantidad mínima por producto debe ser al menos 1.'
         ];
     }
 }

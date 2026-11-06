@@ -10,6 +10,9 @@ class Factura extends Model
     use SoftDeletes;
 
     protected $table = 'factura';
+    protected $primaryKey = 'id_factura';
+    public $incrementing = true;
+    protected $keyType = 'int';
     
     protected $fillable = [
         'numero_documento_cliente',

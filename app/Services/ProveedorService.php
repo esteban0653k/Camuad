@@ -14,7 +14,7 @@ class ProveedorService
     }
 
 
-     public function getAll(){
+    public function getAll(){
         return $this->proveedorRepository->getAll();  
     }
 
@@ -29,10 +29,10 @@ class ProveedorService
     }
 
 
-     public function update(string $nit, array $data)
-     {
-       return $this->proveedorRepository->update($nit, $data);
-     }
+    public function update(string $nit, array $data)
+    {
+        return $this->proveedorRepository->update($nit, $data);
+    }
 
     public function delete(string $nit)
     {

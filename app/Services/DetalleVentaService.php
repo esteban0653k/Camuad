@@ -15,19 +15,19 @@ class DetalleVentaService
         return $this->detalleVentaRepository->getAll();
     }
 
-    public function obtenerDetallePorId(string $id)
+    public function obtenerDetallePorId(string|int $id)
     {
         return $this->detalleVentaRepository->getById($id);
     }
 
     public function crearDetalle(array $data)
     {
-        // Cálculo automático del subtotal por línea
+        // Cálculo automático del subtotal del detalle unitario
         $data['subtotal'] = $data['cantidad'] * $data['precio_unitario'];
         return $this->detalleVentaRepository->create($data);
     }
 
-    public function actualizarDetalle(string $id, array $data)
+    public function actualizarDetalle(string|int $id, array $data)
     {
         if (isset($data['cantidad']) && isset($data['precio_unitario'])) {
             $data['subtotal'] = $data['cantidad'] * $data['precio_unitario'];
@@ -35,7 +35,7 @@ class DetalleVentaService
         return $this->detalleVentaRepository->update($id, $data);
     }
 
-    public function eliminarDetalle(string $id)
+    public function eliminarDetalle(string|int $id)
     {
         return $this->detalleVentaRepository->delete($id);
     }
