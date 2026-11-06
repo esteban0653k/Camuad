@@ -16,14 +16,17 @@ class ProductoRequest extends FormRequest
         $skuActual = $this->route('producto'); 
 
         return [
-            'sku' => 'required|string|max:100|unique:producto,sku,' . $skuActual . ',sku',
-            'nombre_producto' => 'required|string|max:255',
-            'precio' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-            'descripcion' => 'nullable|string',
-            'id_categoria' => 'required|exists:categorias,id',
-            'id_marca' => 'required|exists:marca,id_marca',];
-    }
+        'sku' =>'required|string|max:100|unique:producto,sku,' . $skuActual . ',sku',
+        'nombre_producto' => 'required|string|max:255',
+        'precio' => 'required|numeric|min:0',
+        'precio_compra' => 'required|numeric|min:0',
+        'stock' => 'required|integer|min:0',
+        'descripcion' => 'nullable|string',
+        'unidad_medida' => 'nullable|string|max:50',
+        'nit_proveedor' => 'required|string|exists:proveedor,nit_proveedor',
+        'id_categoria' => 'required|exists:categorias,id',
+        'id_marca' => 'required|exists:marca,id_marca',
+    ];}
 
     public function messages(): array
     {

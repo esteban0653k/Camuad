@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Interfaces\ProductoInterface;
+use Illuminate\Validation\ValidationException;
 
 class ProductoService
 {
@@ -30,6 +31,13 @@ class ProductoService
 
     public function actualizarProducto(string $sku, array $datos)
     {
+        
+        if (isset($datos['stock']) && $datos['stock'] < 0) {
+            throw ValidationException::withMessages([
+                'stock' => ['El stock del producto no puede ser un número negativo.']
+            ]);
+        }
+
         return $this->productoRepository->update($sku, $datos);
     }
 
@@ -41,5 +49,26 @@ class ProductoService
     public function buscarPorNombre(string $nombre)
     {
         return $this->productoRepository->buscarPorNombre($nombre);
+    }
+
+    public function verificarYDescontarStock(string $sku, int $cantidadSolicitada)
+    {
+        $producto = $this->productoRepository->getById($sku);
+
+        if (!$producto) {
+            throw new \Exception('Producto no encontrado.', 404);
+        }
+
+        if ($cantidadSolicitada > $producto->stock) {
+            throw ValidationException::withMessages([
+                'stock' => ["Stock insuficiente. Cantidad disponible en inventario: {$producto->stock}."]
+            ]);
+        }
+
+        $nuevoStock = $producto->stock - $cantidadSolicitada;
+
+        return $this->productoRepository->update($sku, [
+            'stock' => $nuevoStock
+        ]);
     }
 }

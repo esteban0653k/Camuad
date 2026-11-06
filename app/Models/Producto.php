@@ -18,11 +18,14 @@ class Producto extends Model
     protected $keyType = 'string'; 
 
     protected $fillable = [
-        'sku', 
+        'sku',
         'nombre_producto',
         'precio',
+        'precio_compra',
         'stock',
         'descripcion',
+        'unidad_medida',
+        'nit_proveedor', 
         'id_categoria',
         'id_marca',
     ];
