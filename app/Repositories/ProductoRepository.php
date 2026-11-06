@@ -14,11 +14,14 @@ class ProductoRepository extends BaseRepository implements ProductoInterface
 
     public function buscarPorNombre(string $nombre)
     {
-        return $this->model->with(['categoria', 'marca'])->where('nombre_producto', 'LIKE', "%{$nombre}%")->get();
+        return $this->model->with(['categoria', 'marca', 'proveedor'])
+            ->where('nombre_producto', 'LIKE', "%{$nombre}%")
+            ->get();
     }
 
     public function obtenerProductosConRelaciones()
     {
-        return $this->model->with(['categoria', 'marca'])->get();
+        return $this->model->with(['categoria', 'marca', 'proveedor'])
+            ->get();
     }
 }

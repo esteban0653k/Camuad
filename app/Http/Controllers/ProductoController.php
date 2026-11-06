@@ -102,4 +102,35 @@ class ProductoController extends Controller
             'data' => $productos
         ], 200);
     }
+    public function descontarStock(Request $request, string $sku): JsonResponse
+    {
+        $request->validate([
+            'cantidad' => 'required|integer|min:1'
+        ], [
+            'cantidad.required' => 'La cantidad es obligatoria.',
+            'cantidad.integer' => 'La cantidad debe ser un número entero.',
+            'cantidad.min' => 'La cantidad debe ser al menos 1.'
+        ]);
+
+        try {
+            $productoActualizado = $this->productoService->verificarYDescontarStock($sku, (int) $request->input('cantidad'));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Stock descontado exitosamente.',
+                'data' => $productoActualizado
+            ], 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], $e->getCode() ?: 404);
+        }
+    }
 }

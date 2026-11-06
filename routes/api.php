@@ -17,6 +17,7 @@ use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\StockController;
 
 
+
 Route::prefix('v1')->group(function(){
     // Api Proveedores
     Route::apiResource('proveedores', ProveedorController::class);  
@@ -44,6 +45,7 @@ Route::apiResource('clientes', ClienteController::class);
 
     //Api productos
     Route::get('productos/buscar', [ProductoController::class, 'buscarPorNombre']);
+    Route::patch('productos/{sku}/descontar-stock', [ProductoController::class, 'descontarStock']);
     Route::apiResource('productos', ProductoController::class);
 
     // Api Facturas
