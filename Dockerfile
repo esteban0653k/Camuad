@@ -1,11 +1,12 @@
 FROM php:8.3-cli
 
-# Instalar dependencias del sistema esenciales
+# Instalar dependencias del sistema esenciales (incluyendo soporte para PostgreSQL)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     unzip \
     libzip-dev \
-    && docker-php-ext-install pdo_mysql zip \
+    libpq-dev \
+    && docker-php-ext-install pdo_mysql pdo_pgsql pgsql zip \
     && rm -rf /var/lib/apt/lists/*
 
 # Instalar Composer oficial

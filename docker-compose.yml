@@ -8,11 +8,11 @@ services:
     volumes:
       - .:/var/www/html
     environment:
-      DB_CONNECTION: mysql
+      DB_CONNECTION: pgsql
       DB_HOST: db
-      DB_PORT: 3306
+      DB_PORT: 5432
       DB_DATABASE: camuad
-      DB_USERNAME: root
+      DB_USERNAME: postgres
       DB_PASSWORD: 1234
     ports:
       - "8000:8000"
@@ -22,31 +22,49 @@ services:
     networks:
       - red_api
 
-  db: 
-    image: mysql:latest
-    container_name: camuad_mysql_container
+  db:
+    image: postgres:15-alpine
+    container_name: camuad_postgres_container
     environment:
-      - MYSQL_ROOT_PASSWORD=1234
-      - MYSQL_DATABASE=camuad
+      POSTGRES_DB: camuad
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
     ports:
-      - "3307:3306"
+      - "5432:5432"
     networks:
       - red_api
     volumes:
-      - mysql_data_camuad:/var/lib/mysql
+      - pgdata_camuad:/var/lib/postgresql/data
 
-  phpmyadmin:
-    image: phpmyadmin:latest
-    container_name: camuad_phpmyadmin_container
+  postgrest:
+    image: postgrest/postgrest:latest
+    container_name: camuad_postgrest_api
     environment:
-      - PMA_HOST=db 
+      PGRST_DB_URI: postgres://postgres:1234@db:5432/camuad
+      PGRST_DB_SCHEMA: public
+      PGRST_DB_ANON_ROLE: web_anon
     ports:
-      - "8081:80"
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      - red_api
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: camuad_pgadmin_container
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: 1234
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
     networks:
       - red_api
 
 volumes:
-  mysql_data_camuad:
+  pgdata_camuad:
 
 networks:
   red_api:

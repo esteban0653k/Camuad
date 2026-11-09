@@ -25,9 +25,8 @@ return new class extends Migration
             $table->string('nit_proveedor', 50);
             $table->foreign('nit_proveedor')->references('nit_proveedor')->on('proveedor')->onDelete('cascade');
 
-            $table->unsignedBigInteger('stock');
-            $table->foreign('stock')->references('id_Compra')->on('stock')->onDelete('cascade');
-
+            $table->unsignedBigInteger('stock_id'); // O puedes mantener el nombre 'stock' si prefieres
+            $table->foreign('stock_id')->references('id_compra')->on('stock')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
