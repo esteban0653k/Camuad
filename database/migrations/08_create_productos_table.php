@@ -13,6 +13,7 @@ return new class extends Migration
                 $table->string('sku', 100)->primary();
                 $table->string('nombre_producto', 255);
                 $table->decimal('precio', 10, 2);
+                $table->decimal('precio_compra', 10, 2);
                 $table->integer('stock')->default(0);
                 $table->text('descripcion')->nullable();
                 $table->string('unidad_medida', 50)->nullable();
