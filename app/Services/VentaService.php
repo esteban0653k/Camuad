@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Interfaces\VentaInterface;
+use App\Models\Movimiento;
 use App\Models\Producto;
+use App\Models\TipoMovimiento;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -30,6 +32,15 @@ class VentaService
         return DB::transaction(function () use ($data) {
             $subtotalGeneral = 0;
             $detallesCalculados = [];
+
+            // Tipo de movimiento para las salidas por venta
+            $tipoSalida = TipoMovimiento::where('nombre', 'Salida')->first();
+
+            if (!$tipoSalida) {
+                throw ValidationException::withMessages([
+                    'tipo_movimiento' => ['No existe el tipo de movimiento "Salida". Créalo primero.']
+                ]);
+            }
 
             foreach ($data['detalles'] ?? [] as $detalle) {
                 // 1. Buscar el producto por SKU y bloquear la fila para evitar ventas simultáneas
@@ -103,9 +114,18 @@ class VentaService
                 'total'             => $totalGeneral,
             ]);
 
-            // 8. Detalles (id_venta se asigna solo por la relación)
+            // 8. Detalles + movimiento de salida por cada producto
             foreach ($detallesCalculados as $detalle) {
                 $venta->detalles()->create($detalle + ['estado_venta' => 'activa']);
+
+                Movimiento::create([
+                    'fecha_movimiento'   => now(),
+                    'cantidad'           => $detalle['cantidad'],
+                    'estado'             => 'activo',
+                    'id_tipo_movimiento' => $tipoSalida->id_tipo_movimiento,
+                    'sku_producto'       => $detalle['sku_producto'],
+                    'id_venta'           => $venta->id_venta,
+                ]);
             }
 
             return $venta->load('cliente', 'detalles.producto');
