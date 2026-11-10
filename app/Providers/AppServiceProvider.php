@@ -23,8 +23,10 @@ use App\Interfaces\UsuarioInterface;
 use App\Repositories\UsuarioRepository;
 use App\Interfaces\RolInterface;
 use App\Repositories\RolRepository;
-use App\Interfaces\StockInterface;
-use App\Repositories\StockRepository;
+use App\Interfaces\MovimientoInterface;
+use App\Interfaces\TipoMovimientoInterface;
+use App\Repositories\MovimientoRepository;
+use App\Repositories\TipoMovimientoRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,7 +34,6 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(ClienteInterface::class, ClienteRepository::class);
         $this->app->bind(ProveedorInterface::class, ProveedorRepository::class);
-        $this->app->bind(StockInterface::class, StockRepository::class);
         $this->app->bind(ProveedorInterface::class, ProveedorRepository::class);
         $this->app->bind(VentaInterface::class, VentaRepository::class);
         $this->app->bind(MarcaInterface::class, MarcaRepository::class);
@@ -41,6 +42,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(DetalleVentaInterface::class, DetalleVentaRepository::class);
         $this->app->bind(UsuarioInterface::class, UsuarioRepository::class);
         $this->app->bind(RolInterface::class, RolRepository::class);
+        $this->app->bind(MovimientoInterface::class, MovimientoRepository::class);
+        $this->app->bind(TipoMovimientoInterface::class, TipoMovimientoRepository::class);
     }
 
     public function boot(): void

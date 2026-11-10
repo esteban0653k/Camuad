@@ -10,9 +10,10 @@ use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\DetalleVentaController;
+use App\Http\Controllers\MovimientoController;
+use App\Http\Controllers\TipoMovimientoController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RolController;
-use App\Http\Controllers\StockController;
 
 Route::prefix('v1')->group(function () {
     // Api Proveedores
@@ -23,12 +24,6 @@ Route::prefix('v1')->group(function () {
     // Api Clientes
     Route::get('clientes/buscar', [ClienteController::class, 'getNombre']);
     Route::apiResource('clientes', ClienteController::class);
-
-    // Api Stock
-    Route::get('stock/activos', [StockController::class, 'listarStockActivo']);
-    Route::post('stock/verificar-alertas', [StockController::class, 'verificarAlertasManual']);
-    Route::get('stock/fecha/{fecha}', [StockController::class, 'findFechaCompra']);
-    Route::apiResource('stock', StockController::class);
 
     // Api Marcas
     Route::get('marcas/buscar', [MarcaController::class, 'buscar']);
@@ -49,6 +44,14 @@ Route::prefix('v1')->group(function () {
     // Api Detalle Venta (solo lectura y cambio de estado)
     Route::apiResource('detalles-venta', DetalleVentaController::class)
         ->only(['index', 'show', 'update']);
+
+    // Api Movimientos (solo lectura: los generan ventas y compras)
+    Route::apiResource('movimientos', MovimientoController::class)
+        ->only(['index', 'show']);
+
+    // Api Tipos de movimiento
+    Route::apiResource('tipos-movimiento', TipoMovimientoController::class)
+        ->parameters(['tipos-movimiento' => 'tipo_movimiento']);
 
     // Api Usuarios
     Route::apiResource('usuarios', UsuarioController::class);
