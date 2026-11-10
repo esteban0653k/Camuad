@@ -6,15 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('factura', function (Blueprint $table) {
-            $table->id('id_factura');
-            $table->string('numero_documento_cliente'); 
-            $table->dateTime('fecha_factura');
+        Schema::create('venta', function (Blueprint $table) {
+            $table->id('id_venta');
+            $table->string('documento_cliente');
+            $table->dateTime('fecha_venta');
             $table->string('metodo_pago', 50)->nullable();
             $table->decimal('monto_recibido', 10, 2)->nullable();
             $table->decimal('cambio', 10, 2)->nullable();
@@ -26,15 +23,12 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('numero_documento_cliente')->references('numero_documento')->on('cliente')->onDelete('cascade');
+            $table->foreign('documento_cliente')->references('numero_documento')->on('cliente')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('factura');
+        Schema::dropIfExists('venta');
     }
 };

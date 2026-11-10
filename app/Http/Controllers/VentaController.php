@@ -3,38 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Services\FacturaService;
-use App\Http\Requests\FacturaRequest;
+use App\Services\VentaService;
+use App\Http\Requests\VentaRequest;
 
-class FacturaController extends Controller 
+class VentaController extends Controller
 {
-    public function __construct(private FacturaService $facturaService) 
+    public function __construct(private VentaService $ventaService)
     {
     }
 
-    public function index() 
+    public function index()
     {
-        $registros = $this->facturaService->listarFacturas();
+        $registros = $this->ventaService->listarVentas();
 
         return response()->json([
-            'message' => 'Se listaron las facturas correctamente',
+            'message' => 'Se listaron las ventas correctamente',
             'data'    => $registros
         ], 200);
     }
 
-    public function store(FacturaRequest $request) 
+    public function store(VentaRequest $request)
     {
-        $registroFactura = $this->facturaService->crearFacturaConDetalles($request->validated());
+        $registroVenta = $this->ventaService->crearVentaConDetalles($request->validated());
 
         return response()->json([
-            'message'          => 'La factura se creó correctamente',
-            'datosRegistrados' => $registroFactura
+            'message'          => 'La venta se creó correctamente',
+            'datosRegistrados' => $registroVenta
         ], 201);
     }
 
-    public function show(string $id) 
+    public function show(string $id)
     {
-        $registro = $this->facturaService->obtenerFacturaPorId($id);
+        $registro = $this->ventaService->obtenerVentaPorId($id);
 
         if (!$registro) {
             return response()->json([
@@ -48,9 +48,9 @@ class FacturaController extends Controller
         ], 200);
     }
 
-    public function update(FacturaRequest $request, string $id) 
+    public function update(VentaRequest $request, string $id)
     {
-        $registroActualizado = $this->facturaService->actualizarFactura($id, $request->validated());
+        $registroActualizado = $this->ventaService->actualizarVenta($id, $request->validated());
 
         if (!$registroActualizado) {
             return response()->json([
@@ -64,9 +64,9 @@ class FacturaController extends Controller
         ], 200);
     }
 
-    public function destroy(string $id) 
+    public function destroy(string $id)
     {
-        $validar = $this->facturaService->eliminarFactura($id);
+        $validar = $this->ventaService->eliminarVenta($id);
 
         if (!$validar) {
             return response()->json([
@@ -75,7 +75,7 @@ class FacturaController extends Controller
         }
 
         return response()->json([
-            'message' => 'La factura se eliminó correctamente'
+            'message' => 'La venta se eliminó correctamente'
         ], 200);
     }
 }

@@ -3,29 +3,31 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DetalleVenta extends Model
 {
-    use SoftDeletes;
-
     protected $table = 'detalle_venta';
     protected $primaryKey = 'id_detalle_venta';
+    public $incrementing = true;
+    protected $keyType = 'int';
+    public $timestamps = false;
 
     protected $fillable = [
-        'id_factura',
-        'id_producto',
+        'id_venta',
+        'sku_producto',
         'cantidad',
         'precio_unitario',
         'subtotal',
-        'estado_venta'
+        'estado_venta',
     ];
 
-    /**
-     * Relación con la Factura
-     */
-    public function factura()
+    public function venta()
     {
-        return $this->belongsTo(Factura::class, 'id_factura', 'id_factura');
+        return $this->belongsTo(Venta::class, 'id_venta', 'id_venta');
+    }
+
+    public function producto()
+    {
+        return $this->belongsTo(Producto::class, 'sku_producto', 'sku');
     }
 }
