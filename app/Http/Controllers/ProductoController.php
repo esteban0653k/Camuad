@@ -102,6 +102,7 @@ class ProductoController extends Controller
             'data' => $productos
         ], 200);
     }
+
     public function descontarStock(Request $request, string $sku): JsonResponse
     {
         $request->validate([
@@ -113,7 +114,7 @@ class ProductoController extends Controller
         ]);
 
         try {
-            $productoActualizado = $this->productoService->verificarYDescontarStock($sku, (int) $request->input('cantidad'));
+            $productoActualizado = $this->productoService->descontarStock($sku, (int) $request->input('cantidad'));
 
             return response()->json([
                 'success' => true,
@@ -127,10 +128,45 @@ class ProductoController extends Controller
                 'errors' => $e->errors()
             ], 422);
         } catch (\Exception $e) {
+            $code = (int) $e->getCode();
+            $status = ($code >= 100 && $code <= 599) ? $code : 422;
+
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
-            ], $e->getCode() ?: 404);
+            ], $status);
+        }
+    }
+
+    public function reabastecerStock(Request $request, string $sku): JsonResponse
+    {
+        $request->validate([
+            'cantidad' => 'required|integer|min:1'
+        ], [
+            'cantidad.required' => 'La cantidad a reabastecer es obligatoria.',
+            'cantidad.min' => 'La cantidad debe ser al menos 1.'
+        ]);
+
+        try {
+            $productoActualizado = $this->productoService->reabastecerStock(
+                $sku, 
+                (int) $request->input('cantidad')
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Stock reabastecido exitosamente y producto reactivado.',
+                'data' => $productoActualizado
+            ], 200);
+
+        } catch (\Exception $e) {
+            $code = (int) $e->getCode();
+            $status = ($code >= 100 && $code <= 599) ? $code : 422;
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], $status);
         }
     }
 }

@@ -42,6 +42,7 @@ Route::prefix('v1')->group(function () {
     Route::get('productos/buscar', [ProductoController::class, 'buscarPorNombre']);
     Route::patch('productos/{sku}/descontar-stock', [ProductoController::class, 'descontarStock']);
     Route::apiResource('productos', ProductoController::class);
+    Route::patch('productos/{sku}/reabastecer-stock', [ProductoController::class, 'reabastecerStock']);
 
     // Api Ventas
     Route::apiResource('ventas', VentaController::class);
