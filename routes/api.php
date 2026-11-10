@@ -8,29 +8,26 @@ use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\ProductoController;
-use App\Http\Controllers\FacturaController;
+use App\Http\Controllers\VentaController;
 use App\Http\Controllers\DetalleVentaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\StockController;
 
-
-
-Route::prefix('v1')->group(function(){
+Route::prefix('v1')->group(function () {
     // Api Proveedores
-    Route::apiResource('proveedores', ProveedorController::class);  
-    Route::get("proveedores/nombre/{name}", [ProveedorController::class, "findByName"]);
-    Route::get("proveedores/correo/{correo}", [ProveedorController::class, "findByCorreo"]);
+    Route::apiResource('proveedores', ProveedorController::class);
+    Route::get('proveedores/nombre/{name}', [ProveedorController::class, 'findByName']);
+    Route::get('proveedores/correo/{correo}', [ProveedorController::class, 'findByCorreo']);
 
     // Api Clientes
     Route::get('clientes/buscar', [ClienteController::class, 'getNombre']);
-Route::apiResource('clientes', ClienteController::class);
+    Route::apiResource('clientes', ClienteController::class);
 
-//Api Stock
-    Route::get("stock/activos", [StockController::class, "listarStockActivo"]);
-    Route::post("stock/verificar-alertas", [StockController::class, "verificarAlertasManual"]);
-    Route::get("stock/fecha/{fecha}", [StockController::class, "findFechaCompra"]);
-
+    // Api Stock
+    Route::get('stock/activos', [StockController::class, 'listarStockActivo']);
+    Route::post('stock/verificar-alertas', [StockController::class, 'verificarAlertasManual']);
+    Route::get('stock/fecha/{fecha}', [StockController::class, 'findFechaCompra']);
     Route::apiResource('stock', StockController::class);
 
     // Api Marcas
@@ -41,18 +38,21 @@ Route::apiResource('clientes', ClienteController::class);
     Route::get('categorias/con-productos', [CategoriasController::class, 'conProductos']);
     Route::apiResource('categorias', CategoriasController::class);
 
-    //Api productos
+    // Api Productos
     Route::get('productos/buscar', [ProductoController::class, 'buscarPorNombre']);
     Route::patch('productos/{sku}/descontar-stock', [ProductoController::class, 'descontarStock']);
     Route::apiResource('productos', ProductoController::class);
 
-    // Api Facturas
-    Route::apiResource('facturas', FacturaController::class);
+    // Api Ventas
+    Route::apiResource('ventas', VentaController::class);
 
-    // Api Detalle Venta
-    Route::apiResource('detalles-venta', DetalleVentaController::class);
+    // Api Detalle Venta (solo lectura y cambio de estado)
+    Route::apiResource('detalles-venta', DetalleVentaController::class)
+        ->only(['index', 'show', 'update']);
+
     // Api Usuarios
     Route::apiResource('usuarios', UsuarioController::class);
+
     // Api Roles
     Route::apiResource('roles', RolController::class);
 });

@@ -15,6 +15,11 @@ class DetalleVentaService
         return $this->detalleVentaRepository->getAll();
     }
 
+    public function listarDetallesPorVenta(int $idVenta)
+    {
+        return $this->detalleVentaRepository->getDetallesPorVenta($idVenta);
+    }
+
     public function obtenerDetallePorId(string|int $id)
     {
         return $this->detalleVentaRepository->getById($id);
@@ -25,19 +30,24 @@ class DetalleVentaService
         // Cálculo automático del subtotal del detalle unitario
         $data['subtotal'] = $data['cantidad'] * $data['precio_unitario'];
 
-        // Si no se especifica un estado de venta, asignamos 'completado' por defecto
-        if (!isset($data['estado_venta'])) {
-            $data['estado_venta'] = 'completado';
-        }
+        // Estado por defecto (debe coincidir con el default de la migración)
+        $data['estado_venta'] = $data['estado_venta'] ?? 'activa';
 
         return $this->detalleVentaRepository->create($data);
     }
 
     public function actualizarDetalle(string|int $id, array $data)
     {
-        if (isset($data['cantidad']) && isset($data['precio_unitario'])) {
-            $data['subtotal'] = $data['cantidad'] * $data['precio_unitario'];
+        // Si cambia solo uno de los dos valores, se toma el otro del registro actual
+        if (isset($data['cantidad']) || isset($data['precio_unitario'])) {
+            $actual = $this->detalleVentaRepository->getById($id);
+
+            $cantidad = $data['cantidad'] ?? $actual->cantidad;
+            $precio   = $data['precio_unitario'] ?? $actual->precio_unitario;
+
+            $data['subtotal'] = $cantidad * $precio;
         }
+
         return $this->detalleVentaRepository->update($id, $data);
     }
 

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Cliente extends Model
 {
     use HasFactory, SoftDeletes;
-    
+
     protected $table = 'cliente';
     protected $primaryKey = 'numero_documento';
     public $incrementing = false;
@@ -20,11 +20,11 @@ class Cliente extends Model
         'tipo_documento',
         'nombre',
         'correo',
-        'telefono'
+        'telefono',
     ];
 
-    public function facturas()
+    public function ventas()
     {
-        return $this->hasMany(Factura::class, 'numero_documento', 'numero_documento');
+        return $this->hasMany(Venta::class, 'documento_cliente', 'numero_documento');
     }
 }
