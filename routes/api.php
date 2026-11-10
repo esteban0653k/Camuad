@@ -12,8 +12,6 @@ use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\DetalleVentaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RolController;
-use App\Http\Controllers\EstadisticaController;
-use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\StockController;
 
 
@@ -57,9 +55,4 @@ Route::apiResource('clientes', ClienteController::class);
     Route::apiResource('usuarios', UsuarioController::class);
     // Api Roles
     Route::apiResource('roles', RolController::class);
-    //Api estadistica
-    Route::apiResource('estadisticas', EstadisticaController::class);
-    Route::get('estadisticas-chart', [EstadisticaController::class, 'chartData']);
-    //Api reporte
-    Route::apiResource('reportes', ReporteController::class);
 });

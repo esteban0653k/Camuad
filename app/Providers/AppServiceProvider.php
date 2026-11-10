@@ -23,10 +23,6 @@ use App\Interfaces\UsuarioInterface;
 use App\Repositories\UsuarioRepository;
 use App\Interfaces\RolInterface;
 use App\Repositories\RolRepository;
-use App\Interfaces\EstadisticaInterface;
-use App\Repositories\EstadisticaRepository;
-use App\Interfaces\ReporteInterface;
-use App\Repositories\ReporteRepository;
 use App\Interfaces\StockInterface;
 use App\Repositories\StockRepository;
 
@@ -45,8 +41,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(DetalleVentaInterface::class, DetalleVentaRepository::class);
         $this->app->bind(UsuarioInterface::class, UsuarioRepository::class);
         $this->app->bind(RolInterface::class, RolRepository::class);
-        $this->app->bind(EstadisticaInterface::class, EstadisticaRepository::class);
-        $this->app->bind(ReporteInterface::class, ReporteRepository::class);
     }
 
     public function boot(): void
