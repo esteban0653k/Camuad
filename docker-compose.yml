@@ -36,20 +36,6 @@ services:
     volumes:
       - pgdata_camuad:/var/lib/postgresql/data
 
-  postgrest:
-    image: postgrest/postgrest:latest
-    container_name: camuad_postgrest_api
-    environment:
-      PGRST_DB_URI: postgres://postgres:1234@db:5432/camuad
-      PGRST_DB_SCHEMA: public
-      PGRST_DB_ANON_ROLE: web_anon
-    ports:
-      - "3000:3000"
-    depends_on:
-      - db
-    networks:
-      - red_api
-
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: camuad_pgadmin_container
