@@ -12,10 +12,25 @@ use App\Http\Controllers\VentaController;
 use App\Http\Controllers\DetalleVentaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\RolController;
-use App\Http\Controllers\StockController;
+use App\Http\Controllers\CompraProveedorController;
+use App\Http\Controllers\DetalleCompraController;
+
 
 Route::prefix('v1')->group(function () {
-    // Api Proveedores
+    
+// Api Compra Proveedor
+    Route::get("compra_proveedor/pendientes", [CompraProveedorController::class, "listarPendientes"]);
+    Route::get("compra_proveedor/estado/{estado}", [CompraProveedorController::class, "listarPorEstado"]);
+    Route::get("compra_proveedor/proveedor/{nitProveedor}", [CompraProveedorController::class, "listarPorProveedor"]);
+    Route::get("compra_proveedor/{id}/detalles", [CompraProveedorController::class, "obtenerConDetalles"]);
+    Route::apiResource('compra_proveedor', CompraProveedorController::class);
+
+    // Api Detalle Compra
+    Route::get("detalle_compra/compra/{idCompra}", [DetalleCompraController::class, "listarPorCompra"]);
+    Route::get("detalle_compra/sku/{sku}", [DetalleCompraController::class, "listarPorSku"]);
+    Route::apiResource('detalle_compra', DetalleCompraController::class);
+
+// Api Proveedores
     Route::apiResource('proveedores', ProveedorController::class);
     Route::get('proveedores/nombre/{name}', [ProveedorController::class, 'findByName']);
     Route::get('proveedores/correo/{correo}', [ProveedorController::class, 'findByCorreo']);
