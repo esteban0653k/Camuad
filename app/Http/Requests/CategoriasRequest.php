@@ -16,16 +16,14 @@ class CategoriasRequest extends FormRequest
 
         return [
             'nombre' => 'required|string|max:255|unique:categorias,nombre,' . $categoryId,
-            'slug' => 'nullable|string|max:255|unique:categorias,slug,' . $categoryId,
-            'descripcion' => 'nullable|string',
+            'descripcion' => 'nullable|string'
         ];
     }
     public function messages(): array
     {
         return [
             'nombre.required' => 'El nombre de la categoría es obligatorio.',
-            'nombre.unique' => 'Ya existe una categoría registrada con este nombre.',
-            'slug.unique' => 'El slug generado ya está en uso.',
+            'nombre.unique' => 'Ya existe una categoría registrada con este nombre.'
         ];
     }
 }

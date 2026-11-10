@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Interfaces\CategoriasInterface;
-use Illuminate\Support\Str;
+
 
 class CategoriasService
 {
@@ -26,19 +26,11 @@ class CategoriasService
 
     public function crearCategoria(array $data)
     {
-        if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['nombre']);
-        }
-
         return $this->categoriasRepository->create($data);
     }
 
     public function actualizarCategoria(int $id, array $data)
     {
-        if (isset($data['nombre']) && empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['nombre']);
-        }
-
         return $this->categoriasRepository->update($id, $data);
     }
 

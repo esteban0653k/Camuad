@@ -45,6 +45,7 @@ Route::apiResource('clientes', ClienteController::class);
     Route::get('productos/buscar', [ProductoController::class, 'buscarPorNombre']);
     Route::patch('productos/{sku}/descontar-stock', [ProductoController::class, 'descontarStock']);
     Route::apiResource('productos', ProductoController::class);
+    Route::patch('productos/{sku}/reabastecer-stock', [ProductoController::class, 'reabastecerStock']);
 
     // Api Facturas
     Route::apiResource('facturas', FacturaController::class);

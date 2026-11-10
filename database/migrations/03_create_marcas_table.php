@@ -8,6 +8,7 @@ return new class extends Migration {
         Schema::create('marca', function (Blueprint $table) {
             $table->id('id_marca');
             $table->string('nombre_marca', 100)->unique();
+            $table->timestamps();
             $table->softDeletes();
         });
     }

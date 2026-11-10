@@ -17,6 +17,9 @@ return new class extends Migration
                 $table->integer('stock')->default(0);
                 $table->text('descripcion')->nullable();
                 $table->string('unidad_medida', 50)->nullable();
+                $table->integer('stock_minimo')->default(5);
+                $table->integer('stock_maximo')->default(100);
+                $table->string('estado', 20)->default('activo');
                 
                 $table->unsignedBigInteger('id_categoria');
                 $table->unsignedBigInteger('id_marca');

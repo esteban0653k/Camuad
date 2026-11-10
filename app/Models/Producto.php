@@ -12,7 +12,6 @@ class Producto extends Model
 
     protected $table = 'producto';
     
-    
     protected $primaryKey = 'sku';
     public $incrementing = false;  
     protected $keyType = 'string'; 
@@ -23,6 +22,7 @@ class Producto extends Model
         'precio',
         'precio_compra',
         'stock',
+        'estado',
         'descripcion',
         'unidad_medida',
         'nit_proveedor', 
@@ -43,5 +43,10 @@ class Producto extends Model
     public function marca(): BelongsTo
     {
         return $this->belongsTo(Marca::class, 'id_marca', 'id_marca');
+    }
+
+    public function proveedor(): BelongsTo
+    {
+        return $this->belongsTo(Proveedor::class, 'nit_proveedor', 'nit_proveedor');
     }
 }
