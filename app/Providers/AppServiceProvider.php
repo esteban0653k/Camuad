@@ -27,6 +27,10 @@ use App\Interfaces\MovimientoInterface;
 use App\Interfaces\TipoMovimientoInterface;
 use App\Repositories\MovimientoRepository;
 use App\Repositories\TipoMovimientoRepository;
+use App\Interfaces\CompraProveedorInterface;
+use App\Repositories\CompraProveedorRepository;
+use App\Interfaces\DetalleCompraInterface;
+use App\Repositories\DetalleCompraRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -41,6 +45,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProductoInterface::class, ProductoRepository::class);
         $this->app->bind(DetalleVentaInterface::class, DetalleVentaRepository::class);
         $this->app->bind(UsuarioInterface::class, UsuarioRepository::class);
+        $this->app->bind(CompraProveedorInterface::class, CompraProveedorRepository::class);
+        $this->app->bind(DetalleCompraInterface::class, DetalleCompraRepository::class);
         $this->app->bind(RolInterface::class, RolRepository::class);
         $this->app->bind(MovimientoInterface::class, MovimientoRepository::class);
         $this->app->bind(TipoMovimientoInterface::class, TipoMovimientoRepository::class);

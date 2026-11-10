@@ -12,6 +12,26 @@ class ProductoRepository extends BaseRepository implements ProductoInterface
         parent::__construct($model);
     }
 
+    public function getById(string|int $sku)
+    {
+        return $this->model->with(['categoria', 'marca', 'proveedor'])
+            ->where('sku', $sku)
+            ->first();
+    }
+
+    public function update(string|int $sku, array $datos)
+    {
+        $producto = $this->getById($sku);
+
+        if (!$producto) {
+            return null;
+        }
+
+        $producto->update($datos);
+
+        return $producto->fresh(['categoria', 'marca', 'proveedor']);
+    }
+
     public function buscarPorNombre(string $nombre)
     {
         return $this->model->with(['categoria', 'marca', 'proveedor'])
