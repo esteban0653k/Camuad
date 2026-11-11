@@ -25,7 +25,7 @@ class DetalleCompraRequest extends FormRequest
                 $isUpdate ? 'sometimes' : 'required',
                 'string',
                 'max:50',
-                'exists:productos,sku',
+                'exists:producto,sku',
             ],
             'cantidad_solicitada' => [
                 $isUpdate ? 'sometimes' : 'required',

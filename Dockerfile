@@ -1,6 +1,6 @@
 FROM php:8.3-cli
 
-# Instalar dependencias del sistema esenciales (incluyendo soporte para PostgreSQL)
+# Instalar dependencias del sistema y extensiones para PostgreSQL y MySQL
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     unzip \
@@ -15,8 +15,6 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Definir el directorio de trabajo
 WORKDIR /var/www/html
 
-# Exponer el puerto para el servidor de desarrollo de Laravel
 EXPOSE 8000
 
-# Comando por defecto para iniciar el servidor interno de Laravel
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]

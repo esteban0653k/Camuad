@@ -4,8 +4,10 @@ namespace App\Services;
 
 use App\Interfaces\CompraProveedorInterface;
 use App\Interfaces\DetalleCompraInterface;
+use App\Models\CompraProveedor;
+use App\Models\DetalleCompra;
 use Illuminate\Support\Facades\DB;
-use InvalidArgumentException;
+use Illuminate\Validation\ValidationException;
 
 class CompraProveedorService
 {
@@ -43,6 +45,7 @@ class CompraProveedorService
             unset($data['detalles']);
 
             $data['estado'] = $data['estado'] ?? 'pendiente';
+            $this->validarEstado($data['estado']);
             $data['total_compra'] = 0;
 
             $compra = $this->compraRepository->create($data);
@@ -55,7 +58,7 @@ class CompraProveedorService
             }
 
             if (!empty($detalles)) {
-                $this->compraRepository->actualizarTotal($compra->id_compra);
+                $this->recalcularTotal($compra->id_compra);
             }
 
             return $this->compraRepository->findWithDetalles($compra->id_compra);
@@ -105,4 +108,28 @@ class CompraProveedorService
         return $this->compraRepository->findByProveedor($nitProveedor);
     }
 
+    /**
+     * Recalcula total_compra sumando cantidad x costo de los detalles.
+     * No depende de la columna subtotal, que puede quedar en 0.
+     */
+    public function recalcularTotal(int|string $idCompra)
+    {
+        $total = DetalleCompra::where('id_compra', $idCompra)
+            ->selectRaw('COALESCE(SUM(cantidad_solicitada * costo_unitario), 0) as total')
+            ->value('total');
+
+        CompraProveedor::where('id_compra', $idCompra)
+            ->update(['total_compra' => $total]);
+
+        return $total;
+    }
+
+    private function validarEstado(string $estado): void
+    {
+        if (!in_array($estado, self::ESTADOS, true)) {
+            throw ValidationException::withMessages([
+                'estado' => ['Estado inválido. Valores permitidos: ' . implode(', ', self::ESTADOS) . '.']
+            ]);
+        }
+    }
 }

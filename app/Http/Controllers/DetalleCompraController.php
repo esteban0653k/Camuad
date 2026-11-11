@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Services\DetalleCompraService;
 use App\Services\CompraProveedorService;
 use App\Http\Requests\DetalleCompraRequest;
@@ -27,9 +27,12 @@ class DetalleCompraController extends Controller
 
     public function store(DetalleCompraRequest $request)
     {
-        $registroDetalle = $this->detalleService->create($request->validated());
+        $registroDetalle = DB::transaction(function () use ($request) {
+            $detalle = $this->detalleService->create($request->validated());
+            $this->compraService->recalcularTotal($detalle->id_compra);
 
-        $this->compraService->recalcularTotal($registroDetalle->id_compra);
+            return $detalle;
+        });
 
         return response()->json([
             'message' => 'El detalle se creó correctamente y se actualizó el total de la compra',
@@ -64,16 +67,21 @@ class DetalleCompraController extends Controller
         }
 
         $idCompraAnterior = $detalleActual->id_compra;
+        $datos = $request->validated();
 
-        $registroActualizado = $this->detalleService->update($id, $request->validated());
+        $registroActualizado = DB::transaction(function () use ($id, $datos, $idCompraAnterior) {
+            $actualizado = $this->detalleService->update($id, $datos);
 
-        $this->compraService->recalcularTotal($idCompraAnterior);
+            $this->compraService->recalcularTotal($idCompraAnterior);
 
-        // Si el detalle se movió a otra compra, también se recalcula la nueva
-        $nuevaCompra = $request->validated()['id_compra'] ?? null;
-        if ($nuevaCompra && (int) $nuevaCompra !== (int) $idCompraAnterior) {
-            $this->compraService->recalcularTotal((int) $nuevaCompra);
-        }
+            // Si el detalle se movió a otra compra, también se recalcula la nueva
+            $nuevaCompra = $datos['id_compra'] ?? null;
+            if ($nuevaCompra && (int) $nuevaCompra !== (int) $idCompraAnterior) {
+                $this->compraService->recalcularTotal((int) $nuevaCompra);
+            }
+
+            return $actualizado;
+        });
 
         return response()->json([
             'message' => 'Se actualizó el detalle correctamente y se actualizó el total de la compra',
@@ -93,9 +101,10 @@ class DetalleCompraController extends Controller
 
         $idCompra = $detalleActual->id_compra;
 
-        $this->detalleService->delete($id);
-
-        $this->compraService->recalcularTotal($idCompra);
+        DB::transaction(function () use ($id, $idCompra) {
+            $this->detalleService->delete($id);
+            $this->compraService->recalcularTotal($idCompra);
+        });
 
         return response()->json([
             'message' => 'El detalle se eliminó correctamente y se actualizó el total de la compra',
