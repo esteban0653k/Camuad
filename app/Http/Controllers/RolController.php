@@ -14,28 +14,44 @@ class RolController extends Controller
 
     public function index(): JsonResponse
     {
-        return response()->json($this->service->listar());
+        return response()->json([
+            'message' => 'Roles obtenidos correctamente.',
+            'data'    => $this->service->listar(),
+        ]);
     }
 
     public function store(RolRequest $request): JsonResponse
     {
         $rol = $this->service->crear($request->validated());
-        return response()->json($rol, 201);
+
+        return response()->json([
+            'message' => 'Rol creado correctamente.',
+            'data'    => $rol,
+        ], 201);
     }
 
     public function show(int $id): JsonResponse
     {
-        return response()->json($this->service->obtener($id));
+        return response()->json([
+            'message' => 'Rol obtenido correctamente.',
+            'data'    => $this->service->obtener($id),
+        ]);
     }
 
     public function update(RolRequest $request, int $id): JsonResponse
     {
-        return response()->json($this->service->actualizar($id, $request->validated()));
+        return response()->json([
+            'message' => 'Rol actualizado correctamente.',
+            'data'    => $this->service->actualizar($id, $request->validated()),
+        ]);
     }
 
     public function destroy(int $id): JsonResponse
     {
         $this->service->eliminar($id);
-        return response()->json(null, 204);
+
+        return response()->json([
+            'message' => 'Rol eliminado correctamente.',
+        ]);
     }
 }
