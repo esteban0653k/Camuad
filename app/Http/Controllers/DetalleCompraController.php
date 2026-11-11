@@ -74,7 +74,6 @@ class DetalleCompraController extends Controller
 
             $this->compraService->recalcularTotal($idCompraAnterior);
 
-            // Si el detalle se movió a otra compra, también se recalcula la nueva
             $nuevaCompra = $datos['id_compra'] ?? null;
             if ($nuevaCompra && (int) $nuevaCompra !== (int) $idCompraAnterior) {
                 $this->compraService->recalcularTotal((int) $nuevaCompra);

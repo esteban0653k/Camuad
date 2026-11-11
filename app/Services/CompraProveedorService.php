@@ -33,11 +33,6 @@ class CompraProveedorService
     {
         return $this->compraRepository->getById($id);
     }
-
-    /**
-     * Crea la compra y, si vienen detalles, los crea y calcula el total.
-     * $data['detalles'] = [['sku_producto' => '...', 'cantidad_solicitada' => 5, 'costo_unitario' => 1000], ...]
-     */
     public function create(array $data)
     {
         return DB::transaction(function () use ($data) {
@@ -108,10 +103,6 @@ class CompraProveedorService
         return $this->compraRepository->findByProveedor($nitProveedor);
     }
 
-    /**
-     * Recalcula total_compra sumando cantidad x costo de los detalles.
-     * No depende de la columna subtotal, que puede quedar en 0.
-     */
     public function recalcularTotal(int|string $idCompra)
     {
         $total = DetalleCompra::where('id_compra', $idCompra)

@@ -12,7 +12,7 @@ services:
       DB_HOST: db
       DB_PORT: 5432
       DB_DATABASE: camuad
-      DB_USERNAME: postgres
+      DB_USERNAME: camuad
       DB_PASSWORD: 1234
     ports:
       - "8000:8000"
@@ -24,10 +24,10 @@ services:
 
   db:
     image: postgres:15-alpine
-    container_name: camuad_postgres_container
+    container_name: postgres_container
     environment:
       POSTGRES_DB: camuad
-      POSTGRES_USER: postgres
+      POSTGRES_USER: camuad
       POSTGRES_PASSWORD: 1234
     ports:
       - "5432:5432"
@@ -35,20 +35,6 @@ services:
       - red_api
     volumes:
       - pgdata_camuad:/var/lib/postgresql/data
-
-  postgrest:
-    image: postgrest/postgrest:latest
-    container_name: camuad_postgrest_api
-    environment:
-      PGRST_DB_URI: postgres://postgres:1234@db:5432/camuad
-      PGRST_DB_SCHEMA: public
-      PGRST_DB_ANON_ROLE: web_anon
-    ports:
-      - "3000:3000"
-    depends_on:
-      - db
-    networks:
-      - red_api
 
   pgadmin:
     image: dpage/pgadmin4:latest
