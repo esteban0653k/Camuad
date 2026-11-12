@@ -16,7 +16,6 @@ class ProveedorRequest extends FormRequest
     {
         $isUpdate = $this->isMethod('PUT') || $this->isMethod('PATCH');
         
-        // Captura el nit del proveedor desde la ruta de manera segura
         $proveedorNit = $this->route('proveedor') ?? $this->route('nit'); 
 
         return [
