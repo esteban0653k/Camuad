@@ -4,7 +4,7 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Notifications\Messages\MailMessage; // <--- Importa esto para los correos
+use Illuminate\Notifications\Messages\MailMessage;
 
 class StockLowNotification extends Notification
 {
@@ -17,17 +17,11 @@ class StockLowNotification extends Notification
         $this->stock = $stock;
     }
 
-    /**
-     * Define los canales por donde se enviará la alerta (Base de datos y Correo).
-     */
     public function via($notifiable): array
     {
-        return ['database', 'mail']; // <--- Añadimos 'mail' aquí
+        return ['database', 'mail'];
     }
 
-    /**
-     * Configuración del correo electrónico que recibirá el usuario.
-     */
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
@@ -36,13 +30,10 @@ class StockLowNotification extends Notification
                     ->line("El producto con SKU: {$this->stock->producto} ha alcanzado un nivel crítico de inventario.")
                     ->line("Cantidad actual: {$this->stock->cantidad}")
                     ->line("Stock mínimo permitido: {$this->stock->cantidad_min_stock}")
-                    ->action('Ver Inventario', url('/stock')) // Enlace opcional a tu vista
+                    ->action('Ver Inventario', url('/stock'))
                     ->line('Por favor, realiza un reabastecimiento pronto.');
     }
 
-    /**
-     * Datos que se guardarán en formato JSON dentro de la tabla 'notifications' de la base de datos.
-     */
     public function toArray($notifiable): array
     {
         return [
