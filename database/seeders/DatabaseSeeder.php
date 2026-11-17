@@ -11,6 +11,13 @@ use App\Models\Categorias;
 use App\Models\Proveedor;
 use App\Models\Marca;
 use App\Models\Producto;
+use App\Models\Cliente;
+use App\Models\Venta;
+use App\Models\DetalleVenta;
+use App\Models\TipoMovimiento;
+use App\Models\Movimiento;
+use App\Models\CompraProveedor;
+use App\Models\DetalleCompra;
 
 class DatabaseSeeder extends Seeder
 {
@@ -76,7 +83,39 @@ class DatabaseSeeder extends Seeder
         
          #SEEDERS PRODUCTO
        Producto::factory()->count(30)->create();
-        
+
+         #SEEDERS CLIENTE
+       Cliente::factory()->count(10)->create();
+       
+         #SEEDERS VENTA
+       Venta::factory()->count(50)->create();
+
+         #SEEDERS DETALLEVENTA
+       DetalleVenta::factory()->count(50)->create();
+         
+         #SEEDERS TIPOMOVIMIENTO 
+       TipoMovimiento::create([
+            'nombre' => 'Entrada', 
+            'descripcion' => 'Ingreso de mercancía al inventario'
+        ]);
+
+       TipoMovimiento::create([
+            'nombre' => 'Salida', 
+            'descripcion' => 'Egreso de mercancía'
+        ]);
+       TipoMovimiento::create([
+            'nombre' => 'Ajuste', 
+            'descripcion' => 'Ajuste de mercancía '
+        ]);
+
+         #SEEDERS MOVIMIENTO 
+        Movimiento::factory()->count(50)->create();
+
+         #SEEDERS COMPRAPROVEEDOR
+        CompraProveedor::factory()->count(30)->create();
+
+         #SEEDERS DETALLECOMPRA
+        DetalleCompra::factory()->count(30)->create();
 
     }   
     

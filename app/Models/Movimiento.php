@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Movimiento extends Model
 {
+    use HasFactory;
     protected $table = 'movimientos';
     protected $primaryKey = 'id_movimiento';
     public $timestamps = false;
@@ -15,8 +17,8 @@ class Movimiento extends Model
         'cantidad', 'estado',
         'id_tipo_movimiento', 
         'sku_producto', 
-        'id_compra'
-        ,'id_venta',
+        'id_compra',
+        'id_venta',
     ];
 
     public function tipo()     { return $this->belongsTo(TipoMovimiento::class, 'id_tipo_movimiento', 'id_tipo_movimiento'); }
