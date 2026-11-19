@@ -18,4 +18,9 @@ class Rol extends Model
     {
         return $this->hasMany(Usuario::class, 'role_id');
     }
+
+    public function permission(): array
+    {
+        return config('rol'.$this->nombre, []);
+    }
 }   
