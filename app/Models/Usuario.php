@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
-class Usuario extends Model
+class Usuario extends Authenticatable implements JWTSubject
 {
- use HasFactory, Notifiable;
+    use Notifiable, SoftDeletes;
 
     protected $table = 'usuarios';
+    // No ponemos $primaryKey porque la tabla usa 'id' por defecto
 
     protected $fillable = [
         'nombre',
@@ -19,8 +21,24 @@ class Usuario extends Model
         'role_id',
     ];
 
+    protected $hidden = [
+        'password',
+    ];
+
     public function rol()
     {
         return $this->belongsTo(Rol::class, 'role_id');
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [
+            'role_id' => $this->role_id,
+        ];
     }
 }

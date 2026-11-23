@@ -1,77 +1,76 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\ClienteController;
-use App\Http\Controllers\MarcaController;
-use App\Http\Controllers\ProductoController;
-use App\Http\Controllers\VentaController;
-use App\Http\Controllers\DetalleVentaController;
-use App\Http\Controllers\MovimientoController;
-use App\Http\Controllers\TipoMovimientoController;
-use App\Http\Controllers\UsuarioController;
-use App\Http\Controllers\RolController;
 use App\Http\Controllers\CompraProveedorController;
 use App\Http\Controllers\DetalleCompraController;
+use App\Http\Controllers\DetalleVentaController;
+use App\Http\Controllers\EstadisticasController;
+use App\Http\Controllers\MarcaController;
+use App\Http\Controllers\MovimientoController;
+use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\RolController;
+use App\Http\Controllers\TipoMovimientoController;
+use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\VentaController;
+use App\Http\Controllers\ProductoImagenController;
+use App\Http\Controllers\ReposicionController;
 
 Route::prefix('v1')->group(function () {
-    
-// Api Compra Proveedor
-    Route::get("compra_proveedor/pendientes", [CompraProveedorController::class, "listarPendientes"]);
-    Route::get("compra_proveedor/estado/{estado}", [CompraProveedorController::class, "listarPorEstado"]);
-    Route::get("compra_proveedor/proveedor/{nitProveedor}", [CompraProveedorController::class, "listarPorProveedor"]);
-    Route::get("compra_proveedor/{id}/detalles", [CompraProveedorController::class, "obtenerConDetalles"]);
-    Route::apiResource('compra_proveedor', CompraProveedorController::class);
 
-    // Api Detalle Compra
-    Route::get("detalle_compra/compra/{idCompra}", [DetalleCompraController::class, "listarPorCompra"]);
-    Route::get("detalle_compra/sku/{sku}", [DetalleCompraController::class, "listarPorSku"]);
-    Route::apiResource('detalle_compra', DetalleCompraController::class);
+    // ==========================================
+    // 1. RUTAS PÚBLICAS (No requieren token)
+    // ==========================================
+    Route::post('auth/login', [AuthController::class, 'login']);
 
-// Api Proveedores
-    Route::apiResource('proveedores', ProveedorController::class);
-    Route::get('proveedores/nombre/{name}', [ProveedorController::class, 'findByName']);
-    Route::get('proveedores/correo/{correo}', [ProveedorController::class, 'findByCorreo']);
+    // ==========================================
+    // 2. RUTAS PROTEGIDAS (Exigen Token JWT)
+    // ==========================================
+    Route::middleware('auth:api')->group(function () {
+        // Sesión JWT
+        Route::post('auth/logout', [AuthController::class, 'logout']);
+        Route::post('auth/refresh', [AuthController::class, 'refresh']);
+        Route::get('auth/me', [AuthController::class, 'me']);
 
-    // Api Clientes
-    Route::get('clientes/buscar', [ClienteController::class, 'getNombre']);
-    Route::apiResource('clientes', ClienteController::class);
+        // Clientes
+        Route::get('clientes/buscar', [ClienteController::class, 'getNombre']);
+        Route::apiResource('clientes', ClienteController::class);
 
-    // Api Marcas
-    Route::get('marcas/buscar', [MarcaController::class, 'buscar']);
-    Route::apiResource('marcas', MarcaController::class);
+        // Proveedores
+        Route::get('proveedores/nombre/{name}', [ProveedorController::class, 'findByName']);
+        Route::get('proveedores/correo/{correo}', [ProveedorController::class, 'findByCorreo']);
+        Route::apiResource('proveedores', ProveedorController::class);
 
-    // Api Categorías
-    Route::get('categorias/con-productos', [CategoriasController::class, 'conProductos']);
-    Route::apiResource('categorias', CategoriasController::class);
+        // Catálogos e Inventario
+        Route::apiResource('categorias', CategoriasController::class);
+        Route::apiResource('marcas', MarcaController::class);
+        Route::apiResource('productos', ProductoController::class);
 
-    // Api Productos
-    Route::get('productos/buscar', [ProductoController::class, 'buscarPorNombre']);
-    Route::patch('productos/{sku}/descontar-stock', [ProductoController::class, 'descontarStock']);
-    Route::apiResource('productos', ProductoController::class);
-    Route::patch('productos/{sku}/reabastecer-stock', [ProductoController::class, 'reabastecerStock']);
+        // Ventas y Compras
+        Route::apiResource('ventas', VentaController::class);
+        Route::apiResource('detalles-venta', DetalleVentaController::class);
+        Route::apiResource('compras', CompraProveedorController::class);
+        Route::apiResource('detalles-compra', DetalleCompraController::class);
 
-    // Api Ventas
-    Route::apiResource('ventas', VentaController::class);
+        // Kardex / Movimientos
+        Route::apiResource('tipos-movimiento', TipoMovimientoController::class);
+        Route::apiResource('movimientos', MovimientoController::class);
 
-    // Api Detalle Venta (solo lectura y cambio de estado)
-    Route::apiResource('detalles-venta', DetalleVentaController::class)
-        ->only(['index', 'show', 'update']);
+        // Administrador y supervisor: estadísticas, imágenes y reposición de stock
+        Route::middleware('role:administrador,supervisor')->group(function () {
+            Route::get('estadisticas', [EstadisticasController::class, 'index']);
+            Route::post('productos/{sku}/imagen', ProductoImagenController::class);
+            Route::post('productos/{sku}/reposicion', ReposicionController::class);
+        });
 
-    // Api Movimientos (solo lectura: los generan ventas y compras)
-    Route::apiResource('movimientos', MovimientoController::class)
-        ->only(['index', 'show']);
-
-    // Api Tipos de movimiento
-    Route::apiResource('tipos-movimiento', TipoMovimientoController::class)
-        ->parameters(['tipos-movimiento' => 'tipo_movimiento']);
-
-    // Api Usuarios
-    Route::apiResource('usuarios', UsuarioController::class);
-
-    // Api Roles
-    Route::apiResource('roles', RolController::class);
+        // Solo administrador: crear cuentas, usuarios y roles
+        Route::middleware('role:administrador')->group(function () {
+            Route::post('auth/register', [AuthController::class, 'register']);
+            Route::apiResource('roles', RolController::class);
+            Route::apiResource('usuarios', UsuarioController::class);
+        });
+    });
 });
