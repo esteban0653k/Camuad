@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use\App\Http\Controllers\Concerns\AuthorizesWithPermission;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductoRequest;
 use App\Services\ProductoService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\routing\Controllers\HasMiddleware;
 
-class ProductoController extends Controller
+
+class ProductoController extends Controller implements HasMiddleware
 {
     protected ProductoService $productoService;
 
