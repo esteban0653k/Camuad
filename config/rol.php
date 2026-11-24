@@ -2,10 +2,20 @@
 
 return [
     'administrador'=>[
-        'productos.view'
+        'products.view', 
+        'products.create',
+        'products.update',
+        'products.delete',
     ],
 
-    'editor'=> [
-        'productos.view'
+    'supervisor'=> [
+        'productos.view',
+        'products.create',
+        'products.update'
+    ],
+
+    'empleado'=> [
+        'productos.view',
+        'products.create',
     ],
 ];
