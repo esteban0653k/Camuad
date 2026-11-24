@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use\App\Http\Controllers\Concerns\AuthorizesWithPermission;
+use App\Http\Controllers\Concerns\AuthorizesWithPermissions;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductoRequest;
 use App\Services\ProductoService;
