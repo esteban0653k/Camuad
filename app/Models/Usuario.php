@@ -3,14 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\Notifiable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class Usuario extends Authenticatable implements JWTSubject
-
 {
- use HasFactory, Notifiable;
+    use HasFactory, Notifiable;
 
     protected $table = 'usuarios';
 
@@ -22,24 +21,28 @@ class Usuario extends Authenticatable implements JWTSubject
     ];
 
     protected $hidden = [
-    'password',
-    'remember_token',
-];
-
-    return [
-        'password' => 'hashed'
+        'password',
+        'remember_token',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'password' => 'hashed',
+        ];
+    }
 
     public function rol()
     {
         return $this->belongsTo(Rol::class, 'role_id');
     }
 
-    public function getRolNombre(): ?string {
+    public function getRolNombre(): ?string
+    {
         return $this->rol?->nombre;
     }
 
-    public function getJWTIdentifier():mixed
+    public function getJWTIdentifier(): mixed
     {
         return $this->getKey();
     }
@@ -47,22 +50,22 @@ class Usuario extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims(): array
     {
         return [
-            'rol'=> $this->getRolNombre();
-        ]
+            'rol' => $this->getRolNombre(),
+        ];
     }
 
-    public function getPermissions(); array
+    public function getPermission(): array
     {
-        return $this->rol?->permissions() ?? []; 
+        return $this->rol?->permissions() ?? [];
     }
 
-    public function hasPermissions(string $permission): bool
+    public function hasPermission(string $permission): bool
     {
-        return in_array($permission, $this->getPermissions(), true);
+        return in_array($permission, $this->getPermission(), true);
     }
 
     public function hasRol(string $role): bool
     {
-        return $this->getRolNombre()=== $role;
+        return $this->getRolNombre() === $role;
     }
 }

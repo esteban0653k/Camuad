@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\ClienteController;
@@ -18,23 +19,33 @@ use App\Http\Controllers\CompraProveedorController;
 use App\Http\Controllers\DetalleCompraController;
 
 Route::prefix('v1')->group(function () {
-    
-// Api Compra Proveedor
-    Route::get("compra_proveedor/pendientes", [CompraProveedorController::class, "listarPendientes"]);
-    Route::get("compra_proveedor/estado/{estado}", [CompraProveedorController::class, "listarPorEstado"]);
-    Route::get("compra_proveedor/proveedor/{nitProveedor}", [CompraProveedorController::class, "listarPorProveedor"]);
-    Route::get("compra_proveedor/{id}/detalles", [CompraProveedorController::class, "obtenerConDetalles"]);
+
+    // Endpoint de entrada (público)
+    Route::post('auth/login', [AuthController::class, 'login']);
+
+    // Rutas de sesión protegidas con JWT
+    Route::middleware('auth:api')->prefix('auth')->group(function () {
+        Route::get('me', [AuthController::class, 'me']);
+        Route::post('logout', [AuthController::class, 'logout']);
+        Route::post('refresh', [AuthController::class, 'refresh']);
+    });
+
+    // Api Compra Proveedor
+    Route::get('compra_proveedor/pendientes', [CompraProveedorController::class, 'listarPendientes']);
+    Route::get('compra_proveedor/estado/{estado}', [CompraProveedorController::class, 'listarPorEstado']);
+    Route::get('compra_proveedor/proveedor/{nitProveedor}', [CompraProveedorController::class, 'listarPorProveedor']);
+    Route::get('compra_proveedor/{id}/detalles', [CompraProveedorController::class, 'obtenerConDetalles']);
     Route::apiResource('compra_proveedor', CompraProveedorController::class);
 
     // Api Detalle Compra
-    Route::get("detalle_compra/compra/{idCompra}", [DetalleCompraController::class, "listarPorCompra"]);
-    Route::get("detalle_compra/sku/{sku}", [DetalleCompraController::class, "listarPorSku"]);
+    Route::get('detalle_compra/compra/{idCompra}', [DetalleCompraController::class, 'listarPorCompra']);
+    Route::get('detalle_compra/sku/{sku}', [DetalleCompraController::class, 'listarPorSku']);
     Route::apiResource('detalle_compra', DetalleCompraController::class);
 
-// Api Proveedores
-    Route::apiResource('proveedores', ProveedorController::class);
+    // Api Proveedores
     Route::get('proveedores/nombre/{name}', [ProveedorController::class, 'findByName']);
     Route::get('proveedores/correo/{correo}', [ProveedorController::class, 'findByCorreo']);
+    Route::apiResource('proveedores', ProveedorController::class);
 
     // Api Clientes
     Route::get('clientes/buscar', [ClienteController::class, 'getNombre']);
@@ -51,8 +62,8 @@ Route::prefix('v1')->group(function () {
     // Api Productos
     Route::get('productos/buscar', [ProductoController::class, 'buscarPorNombre']);
     Route::patch('productos/{sku}/descontar-stock', [ProductoController::class, 'descontarStock']);
-    Route::apiResource('productos', ProductoController::class);
     Route::patch('productos/{sku}/reabastecer-stock', [ProductoController::class, 'reabastecerStock']);
+    Route::apiResource('productos', ProductoController::class);
 
     // Api Ventas
     Route::apiResource('ventas', VentaController::class);

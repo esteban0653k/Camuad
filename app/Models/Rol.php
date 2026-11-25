@@ -6,21 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rol extends Model
 {
-    
-    protected $table = 'roles'; 
+    protected $table = 'roles';
 
     protected $fillable = [
         'nombre',
     ];
 
-    
     public function usuarios()
     {
         return $this->hasMany(Usuario::class, 'role_id');
     }
 
-    public function permission(): array
+    public function permissions(): array
     {
-        return config('rol'.$this->nombre, []);
+        if (!$this->nombre) {
+            return [];
+        }
+
+        $permissions = config('rol.' . strtolower($this->nombre), []);
+
+        return is_array($permissions) ? $permissions : [];
     }
-}   
+}
