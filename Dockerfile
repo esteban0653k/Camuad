@@ -1,5 +1,4 @@
-FROM php:8.3-cli
-
+FROM php:8.2-cli
 # Instalar dependencias del sistema y extensiones para PostgreSQL y MySQL
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \

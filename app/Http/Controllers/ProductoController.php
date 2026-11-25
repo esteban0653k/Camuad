@@ -2,13 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\AuthorizesWithPermissions;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductoRequest;
 use App\Services\ProductoService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\routing\Controllers\HasMiddleware;
 
-class ProductoController extends Controller
+
+class ProductoController extends Controller implements HasMiddleware
+
 {
+    use AuthorizesWithPermissions;
+
+    public static function permissions(): array
+    {
+        return [
+            'index' => 'products.view',
+            'show' => 'products.view', 
+            'store' => 'products.create',
+            'update' => 'products.update',
+            'destroy' => 'products.delete',
+        ];
+    }
+
     protected ProductoService $productoService;
 
     public function __construct(ProductoService $productoService)
